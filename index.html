@@ -33,7 +33,7 @@
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.js"></script>
 <style>
   @font-face{font-family:'boldfinger';src:url('https://www.presidenteivancepeda.com/_next/static/media/Boldfinger-s.p.11htjmau7w4ly.ttf') format('truetype');font-weight:400 900;font-display:swap;}
-  :root{--tinta:#544595;--acento:#f3930d;--acento2:#ffc05c;--purpura:#874088;--bg:#f5f3ed;--card:#fff;--texto:#2f2f2d;--muted:#6b6862;--linea:#e0ddd4;}
+  :root{--tinta:#544595;--acento:#f3930d;--acento2:#f7a83a;--purpura:#874088;--bg:#f5f3ed;--card:#fff;--texto:#1d1b28;--muted:#6b6862;--linea:#e0ddd4;}
   *{box-sizing:border-box;margin:0;padding:0;}
   body{font-family:"Nunito Sans","Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--texto);line-height:1.5;}
   .wrap{max-width:1080px;margin:0 auto;padding:0 20px 60px;}
@@ -46,7 +46,11 @@
   .sub{font-size:14px;opacity:.85;max-width:600px;}
   .src{font-size:11px;margin-top:6px;opacity:.7;}
   .lockups{display:flex;gap:34px;margin-top:16px;align-items:flex-end;}
+  .hashtag{font-family:'boldfinger',"Nunito Sans",Arial,sans-serif;font-size:26px;color:var(--acento2,#ffc05c);text-decoration:none;letter-spacing:.5px;align-self:flex-end;line-height:1;}
+  .hashtag:hover{color:#fff;}
   .lockup{font-size:22px;display:inline-flex;flex-direction:column;align-items:center;line-height:1;text-decoration:none;color:#fff;}
+  .lockup{transition:color .15s;}
+  .lockup:hover{color:var(--acento2,#ffc05c);}
   .lk-label{font-family:"Nunito Sans",Arial,sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:.35em;padding-left:.35em;margin-bottom:.12em;}
   .lk-big{font-family:'boldfinger',Arial,sans-serif;text-transform:uppercase;font-size:1.6em;line-height:.85;letter-spacing:-.02em;}
   .lk-small{font-family:'boldfinger',Arial,sans-serif;text-transform:uppercase;line-height:.9;letter-spacing:.02em;margin-top:-.05em;}
@@ -78,7 +82,7 @@
   .tip .row.big span{font-weight:700;}
   .tip .row.dcap{padding:3px 10px;border-radius:9px;font-weight:700;margin-top:6px;}
   .tip .row.dcap b{color:#fff;}
-  .win-c{background:#5a2d9c;color:#fff;}.win-a{background:#b0431f;color:#fff;}
+  .win-c{background:#6f5fb0;color:#fff;}.win-a{background:#d62828;color:#fff;}
   .bpanel{background:var(--tinta);color:#fff;padding:14px 16px;border-radius:12px;font-size:13.5px;line-height:1.55;width:100%;max-width:280px;box-shadow:0 6px 20px rgba(0,0,0,.18);}
   .bpanel .bn{font-weight:800;font-size:16px;margin-bottom:2px;}
   .bpanel .bl{font-size:11.5px;opacity:.8;margin-bottom:8px;}
@@ -105,7 +109,7 @@
   .chip:hover{border-color:var(--tinta);}
   .estado{margin-top:14px;font-size:13px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
   .pill{padding:5px 11px;border-radius:14px;font-weight:600;}
-  .est-fuerte{background:#a3271f;color:#fff;}.est-medio{background:#d99204;color:#fff;}.est-leve{background:#1c4e80;color:#fff;}.est-bien{background:#1c4e80;color:#fff;}
+  .est-fuerte{background:#c0392b;color:#fff;}.est-medio{background:#d99204;color:#fff;}.est-leve{background:#1c4e80;color:#fff;}.est-bien{background:#1e3a8a;color:#fff;}
   .est-info{color:#111;font-weight:800;font-size:13.5px;}
   .dif-pos,.dif-neg,.dif-ret{color:#fff;}
   .dif-pos{background:#1d6b3a;}
@@ -225,11 +229,12 @@
 <body>
 <header class="top"><img class="top-foto" src="images/ivnaaida.webp" alt=""><div class="wrap">
   <div class="brand">El poder de la verdad · Segunda vuelta</div>
-  <h1>BOGOTÁ CON CEPEDA</h1>
+  <h1><span style="color:#F3930D">BOGOTÁ</span> CON CEPEDA</h1>
   <div class="sub"><b>Encuentra tu barrio en el mapa, descarga tu volante, imprímelo y reparte.</b></div>
   <div class="lockups">
     <a class="lockup" href="https://www.presidenteivancepeda.com/" aria-label="Presidente Iván Cepeda"><span class="lk-label" style="font-size:.55em">Presidente</span><span class="lk-big">Iván</span><span class="lk-small" style="font-size:.95em">Cepeda</span></a>
     <a class="lockup" href="https://www.presidenteivancepeda.com/quien-es-aida" aria-label="Vicepresidenta Aida Quilcué"><span class="lk-label" style="font-size:.5em">Vicepresidenta</span><span class="lk-big">Aida</span><span class="lk-small" style="font-size:.85em">Quilcué</span></a>
+    <a class="hashtag" href="https://x.com/hashtag/MeLaJuegoPorLaVida" target="_blank" rel="noopener">#MeLaJuegoPorLaVida</a>
   </div>
 </div></header>
 
@@ -347,13 +352,13 @@ function hideTip(){TIP.style.opacity=0;}
 async function downloadPanelImg(){
  const bx=cur;if(!bx)return;
  track('descarga_imagen_panel',{barrio:bx.b,localidad:bx.loc});
- const ESTC={'est-fuerte':'#a3271f','est-medio':'#d99204','est-bien':'#1c4e80'};
+ const ESTC={'est-fuerte':'#c0392b','est-medio':'#d99204','est-bien':'#1e3a8a'};
  const [dc]=est(bx.d);const m26=bx.c-bx.a;
  const winLab=bx.w==='C'?'Va Cepeda':'Va Abelardo',winVal='+'+Math.abs(m26).toFixed(0)+'%';
- const winC=bx.w==='C'?'#5a2d9c':'#b0431f';
+ const winC=bx.w==='C'?'#6f5fb0':'#d62828';
  const css=getComputedStyle(document.documentElement);
  const TINTA=(css.getPropertyValue('--tinta')||'').trim()||'#544595';
- const AC2=(css.getPropertyValue('--acento2')||'').trim()||'#ffc05c';
+ const AC2=(css.getPropertyValue('--acento2')||'').trim()||'#f7a83a';
  const S=3,W=320,PAD=16,cv=document.createElement('canvas');
  const H=218;
  cv.width=W*S;cv.height=H*S;const x=cv.getContext('2d');x.scale(S,S);

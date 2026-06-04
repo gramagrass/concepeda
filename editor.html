@@ -7,7 +7,7 @@
 <link rel="icon" type="image/png" href="images/favicon.png">
 
 <style>
-:root{--tinta:#0f2a43;--acento:#e4572e;--ambar:#f3a712;--bg:#f4f1ea;--txt:#1c2733;--ok:#3f9a73}
+:root{--tinta:#544595;--acento:#f3930d;--ambar:#f7a83a;--bg:#f5f3ed;--txt:#1d1b28;--ok:#2d8a3e}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Helvetica,Arial,sans-serif;background:var(--bg);color:var(--txt);font-size:15px;line-height:1.45}
 header{position:sticky;top:0;z-index:10;background:var(--tinta);color:#fff;padding:10px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
@@ -34,7 +34,7 @@ main{max-width:880px;margin:0 auto;padding:14px 16px 80px}
 .fld label{display:block;font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
 textarea{width:100%;border:1px solid #ccc;border-radius:6px;padding:8px 10px;font:inherit;resize:none;overflow:hidden;background:#fffdf8}
 textarea:focus{outline:2px solid var(--ambar);border-color:transparent}
-.warn{margin-top:4px;font-size:12.5px;color:#a32414;background:#fdeeea;border-radius:5px;padding:5px 8px;display:none}
+.warn{margin-top:4px;font-size:12.5px;color:#c0392b;background:#fdeeea;border-radius:5px;padding:5px 8px;display:none}
 .warn.show{display:block}
 .lista .fld{margin-top:6px}
 footer{position:fixed;bottom:0;left:0;right:0;background:var(--tinta);color:#fff;padding:8px 16px;font-size:13px;display:none;justify-content:space-between;align-items:center}
@@ -144,7 +144,7 @@ function listo(){
     pantallaAbrir();
     const falta=[!DATA.fichas&&'fichas.json',!DATA.logros&&'logros.json'].filter(Boolean).join(' y ');
     document.getElementById('list').insertAdjacentHTML('afterbegin',
-      `<p class="hint" style="color:#a32414;font-weight:700">Falta seleccionar: ${falta}</p>`);
+      `<p class="hint" style="color:#c0392b;font-weight:700">Falta seleccionar: ${falta}</p>`);
   }
 }
 
