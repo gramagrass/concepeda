@@ -50,8 +50,23 @@
   .tip .bl{font-size:11px;opacity:.8;margin-bottom:6px;}
   .tip .row{display:flex;justify-content:space-between;gap:14px;}
   .tip .row b{color:var(--acento2);}
-  .tip .win{margin-top:5px;font-weight:700;font-size:11.5px;padding:2px 7px;border-radius:10px;display:inline-block;}
+  .tip .row.big{font-size:15px;}
+  .tip .row.big span{font-weight:700;}
+  .tip .row.dcap{padding:3px 10px;border-radius:9px;font-weight:700;margin-top:6px;}
+  .tip .row.dcap b{color:#fff;}
   .win-c{background:#5a2d9c;color:#fff;}.win-a{background:#b0431f;color:#fff;}
+  .bpanel{background:var(--tinta);color:#fff;padding:14px 16px;border-radius:12px;font-size:13.5px;line-height:1.55;width:100%;max-width:280px;box-shadow:0 6px 20px rgba(0,0,0,.18);}
+  .bpanel .bn{font-weight:800;font-size:16px;margin-bottom:2px;}
+  .bpanel .bl{font-size:11.5px;opacity:.8;margin-bottom:8px;}
+  .bpanel .row{display:flex;justify-content:space-between;gap:14px;}
+  .bpanel .row b{color:var(--acento2);}
+  .bpanel .row.big{font-size:16px;}
+  .bpanel .row.big span{font-weight:700;}
+  .bpanel .pfoot{text-align:right;margin-top:10px;}
+  .bpanel .img-btn{background:none;border:0;color:#fff;opacity:.85;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;padding:0;}
+  .bpanel .img-btn:hover{opacity:1;}
+  .bpanel .row.dcap{padding:4px 12px;border-radius:10px;font-weight:700;margin-top:7px;}
+  .bpanel .row.dcap b{color:#fff;}
   .controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:18px;}
   .search{position:relative;flex:1;min-width:220px;}
   .search input{width:100%;padding:12px 14px;font-size:15px;border:1.5px solid var(--linea);border-radius:10px;outline:none;}
@@ -66,7 +81,7 @@
   .chip:hover{border-color:var(--tinta);}
   .estado{margin-top:14px;font-size:13px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
   .pill{padding:5px 11px;border-radius:14px;font-weight:600;}
-  .est-fuerte{background:#a3271f;color:#fff;}.est-medio{background:#d97c06;color:#fff;}.est-leve{background:#1c4e80;color:#fff;}.est-bien{background:#1d6b3a;color:#fff;}
+  .est-fuerte{background:#a3271f;color:#fff;}.est-medio{background:#d99204;color:#fff;}.est-leve{background:#1c4e80;color:#fff;}.est-bien{background:#1c4e80;color:#fff;}
   .est-info{color:#111;font-weight:800;font-size:13.5px;}
   .dif-pos,.dif-neg,.dif-ret{color:#fff;}
   .dif-pos{background:#1d6b3a;}
@@ -208,7 +223,6 @@
     <label class="toggle"><input type="checkbox" id="tc" checked> Mostrar propuestas</label>
   </div>
   <div class="chips" id="chips"></div>
-  <div class="estado" id="estado"></div>
   <div id="preview"><div class="placeholder-msg">Toca un barrio en el mapa o búscalo por nombre para generar su volante.</div></div>
 </div>
 <footer class="webfoot"><div class="wrap">
@@ -249,7 +263,7 @@ const elSrc=document.getElementById('src');
 function load(url,fb){return fetch(url).then(r=>{if(!r.ok)throw 0;return r.json();}).catch(()=>fb);}
 Promise.all([load('fichas.json',FICHAS_FB),load('logros.json',LOGROS_FB)]).then(([fj,lj])=>{indexFichas(fj);LOGROSDB=(lj.logros||[]);if(elSrc)elSrc.textContent='';init();});
 
-const Q=document.getElementById('q'),R=document.getElementById('results'),CH=document.getElementById('chips'),EST=document.getElementById('estado'),P=document.getElementById('preview'),TC=document.getElementById('tc'),TIP=document.getElementById('tip'),LEG=document.getElementById('legend'),MD=document.getElementById('modedesc');
+const Q=document.getElementById('q'),R=document.getElementById('results'),CH=document.getElementById('chips'),P=document.getElementById('preview'),TC=document.getElementById('tc'),TIP=document.getElementById('tip'),LEG=document.getElementById('legend'),MD=document.getElementById('modedesc');
 let cur=null, mode='win';
 let custom={name:null,ids:[null,null,null]};
 
@@ -290,15 +304,91 @@ window.addEventListener('load',()=>{MAPGL&&MAPGL.resize();});
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{MAPGL&&MAPGL.resize();});
 function recolor(){if(MAPGL&&MAPGL.getLayer('b-fill'))MAPGL.setPaintProperty('b-fill','fill-color',['get',mode==='delta'?'colD':'colW']);}
 
-function showTip(ev,p){const m=p.c-p.a;const[,txt]=est(p.d);
+function showTip(ev,p){const m=p.c-p.a;const[dc]=est(p.d);
  TIP.innerHTML=`<div class="bn">${p.b}</div><div class="bl">${p.loc} · UPZ ${p.upz} · ${p.uso}</div>`+
-  `<div class="row"><span>Cepeda 2026</span><b>${p.c}%</b></div>`+
-  `<div class="row"><span>Abelardo 2026</span><b>${p.a}%</b></div>`+
   `<div class="row"><span>Estrato</span><b>${p.estrato}</b></div>`+
-  `<div class="row"><span>vs Petro 2022</span><b>${p.d>0?'+':''}${p.d} pts</b></div>`+
-  `<span class="win ${p.w==='C'?'win-c':'win-a'}">${p.w==='C'?'Va Cepeda +'+Math.abs(m).toFixed(0):'Va Abelardo +'+Math.abs(m).toFixed(0)}</span>`;
+  `<div class="row big"><span>Cepeda</span><b>${p.c}%</b></div>`+
+  `<div class="row big"><span>Abelardo</span><b>${p.a}%</b></div>`+
+  `<div class="row dcap ${p.w==='C'?'win-c':'win-a'}"><span>${p.w==='C'?'Va Cepeda':'Va Abelardo'}</span><b>+${Math.abs(m).toFixed(0)}%</b></div>`+
+  `<div class="row dcap ${dc}"><span>vs Petro 2022</span><b>${p.d>0?'+':''}${p.d}%</b></div>`;
  TIP.style.opacity=1;TIP.style.left=Math.min(ev.clientX+14,window.innerWidth-262)+'px';TIP.style.top=Math.max(ev.clientY-10,8)+'px';}
 function hideTip(){TIP.style.opacity=0;}
+async function downloadPanelImg(){
+ const bx=cur;if(!bx)return;
+ const ESTC={'est-fuerte':'#a3271f','est-medio':'#d99204','est-bien':'#1c4e80'};
+ const [dc]=est(bx.d);const m26=bx.c-bx.a;
+ const winLab=bx.w==='C'?'Va Cepeda':'Va Abelardo',winVal='+'+Math.abs(m26).toFixed(0)+'%';
+ const winC=bx.w==='C'?'#5a2d9c':'#b0431f';
+ const css=getComputedStyle(document.documentElement);
+ const TINTA=(css.getPropertyValue('--tinta')||'').trim()||'#544595';
+ const AC2=(css.getPropertyValue('--acento2')||'').trim()||'#ffc05c';
+ const S=3,W=320,PAD=16,cv=document.createElement('canvas');
+ const H=218;
+ cv.width=W*S;cv.height=H*S;const x=cv.getContext('2d');x.scale(S,S);
+ const rr=(a,b,w,hh,r)=>{x.beginPath();x.moveTo(a+r,b);x.arcTo(a+w,b,a+w,b+hh,r);x.arcTo(a+w,b+hh,a,b+hh,r);x.arcTo(a,b+hh,a,b,r);x.arcTo(a,b,a+w,b,r);x.closePath();};
+ rr(0,0,W,H,12);x.fillStyle=TINTA;x.fill();
+ x.fillStyle='#fff';x.font='800 17px Helvetica,Arial';
+ let bn=bx.b;while(x.measureText(bn).width>W-2*PAD&&bn.length>3)bn=bn.slice(0,-2);
+ x.fillText(bn,PAD,30);
+ x.globalAlpha=.8;x.font='11.5px Helvetica,Arial';
+ x.fillText(`${bx.loc} \u00b7 UPZ ${bx.upz} \u00b7 ${bx.uso}`,PAD,48);x.globalAlpha=1;
+ let y=74;
+ // Estrato (normal)
+ x.font='13.5px Helvetica,Arial';x.fillStyle='#fff';x.fillText('Estrato',PAD,y);
+ x.font='700 13.5px Helvetica,Arial';x.fillStyle=AC2;
+ x.fillText(String(bx.estrato),W-PAD-x.measureText(String(bx.estrato)).width,y);y+=26;
+ // Cepeda / Abelardo (+20%)
+ [['Cepeda',bx.c+'%'],['Abelardo',bx.a+'%']].forEach(([k,v])=>{
+  x.font='700 16px Helvetica,Arial';x.fillStyle='#fff';x.fillText(k,PAD,y);
+  x.font='700 16px Helvetica,Arial';x.fillStyle=AC2;x.fillText(v,W-PAD-x.measureText(v).width,y);y+=30;});
+ y-=16;
+ // Va Cepeda/Abelardo primero
+ rr(PAD,y,W-2*PAD,26,10);x.fillStyle=winC;x.fill();
+ x.fillStyle='#fff';x.font='700 13px Helvetica,Arial';x.fillText(winLab,PAD+12,y+17);
+ x.fillText(winVal,W-PAD-12-x.measureText(winVal).width,y+17);
+ y+=34;
+ // vs Petro 2022
+ rr(PAD,y,W-2*PAD,26,10);x.fillStyle=ESTC[dc]||'#d97c06';x.fill();
+ x.fillStyle='#fff';x.fillText('vs Petro 2022',PAD+12,y+17);
+ const dv=(bx.d>0?'+':'')+bx.d+'%';x.fillText(dv,W-PAD-12-x.measureText(dv).width,y+17);
+ cv.toBlob(async b=>{
+  const tagged=await tagSRGB(b);
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(tagged);
+  a.download=bx.b.replace(/[^\w\u00e1\u00e9\u00ed\u00f3\u00fa\u00f1 -]/gi,'')+'-datos.png';
+  a.click();URL.revokeObjectURL(a.href);
+ },'image/png');
+}
+
+// Inserta chunks sRGB+gAMA en el PNG para que todas las apps muestren los colores exactos
+async function tagSRGB(blob){
+ try{
+  const buf=new Uint8Array(await blob.arrayBuffer());
+  // tabla CRC32
+  const T=new Int32Array(256);
+  for(let n=0;n<256;n++){let c=n;for(let k=0;k<8;k++)c=(c&1)?(0xEDB88320^(c>>>1)):(c>>>1);T[n]=c;}
+  const crc=d=>{let c=-1;for(let i=0;i<d.length;i++)c=T[(c^d[i])&255]^(c>>>8);return (c^-1)>>>0;};
+  const chunk=(tipo,datos)=>{
+   const t=[...tipo].map(ch=>ch.charCodeAt(0));
+   const cuerpo=new Uint8Array([...t,...datos]);
+   const c=crc(cuerpo);
+   const out=new Uint8Array(8+datos.length+4);
+   new DataView(out.buffer).setUint32(0,datos.length);
+   out.set(cuerpo,4);
+   new DataView(out.buffer).setUint32(8+datos.length,c);
+   return out;};
+  const srgb=chunk('sRGB',[0]);                       // intent: perceptual
+  const g=new Uint8Array(4);new DataView(g.buffer).setUint32(0,45455);
+  const gama=chunk('gAMA',g);
+  const ins=33;                                       // tras firma(8)+IHDR(25)
+  const out=new Uint8Array(buf.length+srgb.length+gama.length);
+  out.set(buf.subarray(0,ins),0);
+  out.set(srgb,ins);out.set(gama,ins+srgb.length);
+  out.set(buf.subarray(ins),ins+srgb.length+gama.length);
+  return new Blob([out],{type:'image/png'});
+ }catch(e){return blob;}
+}
+
 
 function init(){
  drawLegend();drawMap();
@@ -307,12 +397,10 @@ function init(){
  document.querySelectorAll('.mode').forEach(b=>b.onclick=()=>{document.querySelectorAll('.mode').forEach(x=>x.classList.remove('on'));b.classList.add('on');mode=b.dataset.m;drawLegend();recolor();});
 }
 Q.addEventListener('input',()=>{const v=Q.value.trim().toLowerCase();if(!v){R.style.display='none';return;}const m=BARR.filter(x=>(x.b+x.upz+x.loc).toLowerCase().includes(v)).slice(0,10);R.innerHTML=m.map((x,i)=>`<li data-i="${BARR.indexOf(x)}">${x.b} <small>· ${x.loc} · UPZ ${x.upz}</small></li>`).join('');R.style.display=m.length?'block':'none';[...R.children].forEach(li=>li.onclick=()=>pick(BARR[+li.dataset.i]));});
-function est(d){if(d<=-10)return['est-fuerte',`Prioridad alta · ${Math.abs(d)} pts debajo de Petro 2022`];if(d<=-3)return['est-medio',`Retroceso de ${Math.abs(d)} pts vs Petro 2022`];if(d<0)return['est-leve',`Leve retroceso (${Math.abs(d)} pt)`];return['est-bien',`Bastión · +${d} pt vs Petro 2022`];}
+function est(d){if(d>=0)return['est-bien',`Creció +${d} pts vs Petro 2022`];if(d<=-6)return['est-fuerte',`Retroceso fuerte · ${Math.abs(d)} pts`];return['est-medio',`Retroceso de ${Math.abs(d)} pts`];}
 
 function pick(x){if(!x)return;cur=x;custom={name:null,ids:[null,null,null]};Q.value=x.b;R.style.display='none';
  if(MAPGL&&MAPGL.getLayer('b-sel'))MAPGL.setFilter('b-sel',['==',['get','cod'],String(x.cod||'')]);
- const[cls,txt]=est(x.d);const dif=(x.c-x.a);const difs=(dif>0?'+':'')+dif.toFixed(1)+'%';
- EST.innerHTML=`<span class="pill ${dif<0?'dif-neg':(x.d<0?'dif-ret':'dif-pos')}">${difs}</span><span class="pill ${cls}">${txt}</span><span class="est-info">${x.b} - Estrato ${x.estrato} - Uso ${x.uso} | Cepeda ${x.c}% - Abelardo ${x.a}%</span>`;
  render();P.scrollIntoView({behavior:'smooth',block:'nearest'});}
 function render(){const x=cur, full=true, showProps=TC.checked;
  const seed=hsh(String(x.cod||x.b));
@@ -347,7 +435,7 @@ function render(){const x=cur, full=true, showProps=TC.checked;
  const arco=(name.toUpperCase()+' CON');
  const fs=arco.length>24?12.5:arco.length>17?14.5:17;
  const pin=`<svg class="pin" viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg"><defs><path id="aT" d="M 30,150 A 110,110 0 0 1 250,150"/><path id="aB" d="M 38,146 A 102,102 0 0 0 242,146"/><clipPath id="cf"><circle cx="140" cy="140" r="127"/></clipPath></defs><circle cx="140" cy="140" r="138" fill="var(--tinta)"/><circle cx="140" cy="140" r="131" fill="none" stroke="var(--acento)" stroke-width="3"/><image href="images/ivnaaida.webp" x="4" y="49" width="271" height="159" clip-path="url(#cf)" preserveAspectRatio="xMidYMax meet"/><text class="pin-t" style="font-size:${fs}px"><textPath href="#aT" startOffset="50%" text-anchor="middle">${arco}</textPath></text><text class="pin-c"><textPath href="#aB" startOffset="50%" text-anchor="middle">CEPEDA</textPath></text></svg>`;
- P.innerHTML=`<div class="pv-grid"><div class="vol-fit"><div class="volante"><div class="v-cab"><div class="v-cabtxt"><div class="v-kicker">EL PODER DE LA VERDAD</div><div class="v-barrio">${name.toUpperCase()} CON</div><div class="v-cepeda">CEPEDA</div></div><img class="v-foto" src="images/ivnaaida.webp" alt=""></div><div class="v-body">${logro}${puntos}<div class="v-fuente">Propuestas tomadas de la Caja de herramientas oficial · presidenteivancepeda.com/cajadeherramientas</div></div><div class="v-pie"><div class="v-lema">En segunda vuelta, vota Cepeda.</div><div class="v-ph"><div class="ph-word"><span class="o">P</span><span class="b">A</span><span class="r">C</span><span class="g">T</span><span class="p">O</span></div><div class="ph-sub">HISTÓRICO</div></div></div><div class="v-barra"><span></span><span></span><span></span></div></div></div><div class="lado"><div class="custom"><label class="cu-lab">Nombre del barrio</label><input id="cuName" class="cu-input" type="text" value="${name}"><label class="cu-lab">Propuesta 1</label><select id="cuSel0" class="cu-sel"></select><label class="cu-lab">Propuesta 2</label><select id="cuSel1" class="cu-sel"></select><label class="cu-lab">Propuesta 3</label><select id="cuSel2" class="cu-sel"></select></div><button class="dl-btn" id="dl">Descarga Volante en PDF</button><div class="dl-note">Se abre el diálogo de impresión — elige "Guardar como PDF" (hoja carta).</div>${pin}<button class="dl-btn dl-pin" id="dlpin">Descargar Pin PNG</button></div></div>`;
+ P.innerHTML=`<div class="pv-grid"><div class="vol-fit"><div class="volante"><div class="v-cab"><div class="v-cabtxt"><div class="v-kicker">EL PODER DE LA VERDAD</div><div class="v-barrio">${name.toUpperCase()} CON</div><div class="v-cepeda">CEPEDA</div></div><img class="v-foto" src="images/ivnaaida.webp" alt=""></div><div class="v-body">${logro}${puntos}<div class="v-fuente">Propuestas tomadas de la Caja de herramientas oficial · presidenteivancepeda.com/cajadeherramientas</div></div><div class="v-pie"><div class="v-lema">En segunda vuelta, vota Cepeda.</div><div class="v-ph"><div class="ph-word"><span class="o">P</span><span class="b">A</span><span class="r">C</span><span class="g">T</span><span class="p">O</span></div><div class="ph-sub">HISTÓRICO</div></div></div><div class="v-barra"><span></span><span></span><span></span></div></div></div><div class="lado">${(()=>{const bx=cur;if(!bx)return'';const m26=bx.c-bx.a;const[dc]=est(bx.d);return `<div class="bpanel"><div class="bn">${bx.b}</div><div class="bl">${bx.loc} · UPZ ${bx.upz} · ${bx.uso}</div><div class="row"><span>Estrato</span><b>${bx.estrato}</b></div><div class="row big"><span>Cepeda</span><b>${bx.c}%</b></div><div class="row big"><span>Abelardo</span><b>${bx.a}%</b></div><div class="row dcap ${bx.w==='C'?'win-c':'win-a'}"><span>${bx.w==='C'?'Va Cepeda':'Va Abelardo'}</span><b>+${Math.abs(m26).toFixed(0)}%</b></div><div class="row dcap ${dc}"><span>vs Petro 2022</span><b>${bx.d>0?'+':''}${bx.d}%</b></div><div class="pfoot"><button class="img-btn" onclick="downloadPanelImg()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Descargar imagen</button></div></div>`;})()}<div class="custom"><label class="cu-lab">Nombre del barrio</label><input id="cuName" class="cu-input" type="text" value="${name}"><label class="cu-lab">Propuesta 1</label><select id="cuSel0" class="cu-sel"></select><label class="cu-lab">Propuesta 2</label><select id="cuSel1" class="cu-sel"></select><label class="cu-lab">Propuesta 3</label><select id="cuSel2" class="cu-sel"></select></div><button class="dl-btn" id="dl">Descarga Volante en PDF</button><div class="dl-note">Se abre el diálogo de impresión — elige "Guardar como PDF" (hoja carta).</div>${pin}<button class="dl-btn dl-pin" id="dlpin">Descargar Pin PNG</button></div></div>`;
  fitVolante();
  document.getElementById('dl').onclick=()=>window.print();
  const bp=document.getElementById('dlpin'); if(bp) bp.onclick=descargarPin;
