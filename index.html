@@ -4,6 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Bogotá con Cepeda — Tu barrio, tu volante</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-473G461JX6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-473G461JX6');
+</script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -318,6 +327,7 @@ function showTip(ev,p){if(window.matchMedia('(pointer:coarse)').matches)return;c
 function hideTip(){TIP.style.opacity=0;}
 async function downloadPanelImg(){
  const bx=cur;if(!bx)return;
+ track('descarga_imagen_panel',{barrio:bx.b,localidad:bx.loc});
  const ESTC={'est-fuerte':'#a3271f','est-medio':'#d99204','est-bien':'#1c4e80'};
  const [dc]=est(bx.d);const m26=bx.c-bx.a;
  const winLab=bx.w==='C'?'Va Cepeda':'Va Abelardo',winVal='+'+Math.abs(m26).toFixed(0)+'%';
@@ -402,7 +412,8 @@ function init(){
 Q.addEventListener('input',()=>{const v=Q.value.trim().toLowerCase();if(!v){R.style.display='none';return;}const m=BARR.filter(x=>(x.b+x.upz+x.loc).toLowerCase().includes(v)).slice(0,10);R.innerHTML=m.map((x,i)=>`<li data-i="${BARR.indexOf(x)}">${x.b} <small>· ${x.loc} · UPZ ${x.upz}</small></li>`).join('');R.style.display=m.length?'block':'none';[...R.children].forEach(li=>li.onclick=()=>pick(BARR[+li.dataset.i]));});
 function est(d){if(d>=0)return['est-bien',`Creció +${d} pts vs Petro 2022`];if(d<=-6)return['est-fuerte',`Retroceso fuerte · ${Math.abs(d)} pts`];return['est-medio',`Retroceso de ${Math.abs(d)} pts`];}
 
-function pick(x){if(!x)return;cur=x;custom={name:null,ids:[null,null,null]};Q.value=x.b;R.style.display='none';
+function track(ev,p){try{if(typeof gtag==='function')gtag('event',ev,p);}catch(e){}}
+function pick(x){if(!x)return;cur=x;track('barrio_seleccionado',{barrio:x.b,localidad:x.loc,ganador:x.w});custom={name:null,ids:[null,null,null]};Q.value=x.b;R.style.display='none';
  if(MAPGL&&MAPGL.getLayer('b-sel'))MAPGL.setFilter('b-sel',['==',['get','cod'],String(x.cod||'')]);
  render();P.scrollIntoView({behavior:'smooth',block:'nearest'});}
 function render(){const x=cur, full=true, showProps=TC.checked;
@@ -440,7 +451,7 @@ function render(){const x=cur, full=true, showProps=TC.checked;
  const pin=`<svg class="pin" viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg"><defs><path id="aT" d="M 24,150 A 116,116 0 0 1 256,150"/><path id="aB" d="M 31,146 A 109,109 0 0 0 249,146"/><clipPath id="cf"><circle cx="140" cy="140" r="127"/></clipPath></defs><circle cx="140" cy="140" r="138" fill="var(--tinta)"/><circle cx="140" cy="140" r="131" fill="none" stroke="var(--acento)" stroke-width="3"/><image href="images/imgboton.png" x="20" y="36" width="240" height="240" clip-path="url(#cf)" preserveAspectRatio="xMidYMid meet"/><text class="pin-t" style="font-size:${fs}px"><textPath href="#aT" startOffset="50%" text-anchor="middle">${arco}</textPath></text><text class="pin-c"><textPath href="#aB" startOffset="50%" text-anchor="middle">CEPEDA</textPath></text></svg>`;
  P.innerHTML=`<div class="pv-grid"><div class="vol-fit"><div class="volante"><div class="v-cab"><div class="v-cabtxt"><div class="v-kicker">EL PODER DE LA VERDAD</div><div class="v-barrio">${name.toUpperCase()} CON</div><div class="v-cepeda">CEPEDA</div></div><img class="v-foto" src="images/ivnaaida.webp" alt=""></div><div class="v-body">${logro}${puntos}<div class="v-fuente">Propuestas tomadas de la Caja de herramientas oficial · presidenteivancepeda.com/cajadeherramientas</div></div><div class="v-pie"><div class="v-lema">En segunda vuelta, vota Cepeda.</div><div class="v-ph"><div class="ph-word"><span class="o">P</span><span class="b">A</span><span class="r">C</span><span class="g">T</span><span class="p">O</span></div><div class="ph-sub">HISTÓRICO</div></div></div><div class="v-barra"><span></span><span></span><span></span></div></div></div><div class="lado">${(()=>{const bx=cur;if(!bx)return'';const m26=bx.c-bx.a;const[dc]=est(bx.d);return `<div class="bpanel"><div class="bn">${bx.b}</div><div class="bl">${bx.loc} · UPZ ${bx.upz} · ${bx.uso}</div><div class="row"><span>Estrato</span><b>${bx.estrato}</b></div><div class="row big"><span>Cepeda</span><b>${bx.c}%</b></div><div class="row big"><span>Abelardo</span><b>${bx.a}%</b></div><div class="row dcap ${bx.w==='C'?'win-c':'win-a'}"><span>${bx.w==='C'?'Va Cepeda':'Va Abelardo'}</span><b>+${Math.abs(m26).toFixed(0)}%</b></div><div class="row dcap ${dc}"><span>vs Petro 2022</span><b>${bx.d>0?'+':''}${bx.d}%</b></div><div class="pfoot"><button class="img-btn" onclick="downloadPanelImg()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Descargar imagen</button></div></div>`;})()}<div class="custom"><div class="cu-title">Personaliza tu volante</div><label class="cu-lab">Nombre del barrio</label><input id="cuName" class="cu-input" type="text" value="${name}"><label class="cu-lab">Propuesta 1</label><select id="cuSel0" class="cu-sel"></select><label class="cu-lab">Propuesta 2</label><select id="cuSel1" class="cu-sel"></select><label class="cu-lab">Propuesta 3</label><select id="cuSel2" class="cu-sel"></select></div><button class="dl-btn" id="dl">Descarga Volante en PDF</button><div class="dl-note">Se abre el diálogo de impresión — elige "Guardar como PDF" (hoja carta).</div>${pin}<button class="dl-btn dl-pin" id="dlstick">Stickers y pines en PDF</button></div></div>`;
  fitVolante();
- document.getElementById('dl').onclick=()=>window.print();
+ document.getElementById('dl').onclick=()=>{track('descarga_volante',{barrio:cur?cur.b:'',localidad:cur?cur.loc:''});window.print();};
  const bs=document.getElementById('dlstick'); if(bs) bs.onclick=descargarStickers;
  const opts=Object.keys(RELEV).filter(id=>FICHAS[id]).sort((a,b)=>FICHAS[a].titulo.localeCompare(FICHAS[b].titulo));
  [0,1,2].forEach(i=>{const el=document.getElementById('cuSel'+i);if(!el)return;
@@ -464,6 +475,7 @@ function toDataURL(u){return fetch(u).then(r=>{if(!r.ok)throw 0;return r.blob();
 // Hoja de stickers carta: bumper vertical a la izquierda + 3 pines a la derecha
 async function descargarStickers(){
  if(!cur)return;
+ track('descarga_stickers',{barrio:cur.b,localidad:cur.loc});
  const name=(custom.name||cur.b);
  const arco=(name.toUpperCase()+' CON');
  const fs=arco.length>24?12.5:arco.length>17?14.5:17;
