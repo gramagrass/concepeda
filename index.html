@@ -267,7 +267,7 @@ function drawLegend(){
 let MAPGL=null;
 function drawMap(){
  BGEO.features.forEach(f=>{const p=f.properties;p.colD=cDelta(p.d);p.colW=cMargin(p.c-p.a);});
- mapboxgl.accessToken='pk.eyJ1IjoiZ3J1bmR1bSIsImEiOiJPYTJaWUJRIn0.fQSdrhLUr_95-yjpD4WQeQ';
+ mapboxgl.accessToken='pk.eyJ1IjoiZ3J1bmR1bSIsImEiOiJjbXB6cWo1M2Uwa2l2MnFvamxxcXh5bDgxIn0.gGUXET8aMYfadSR8oVFDWg';
  MAPGL=new mapboxgl.Map({container:'map',style:'mapbox://styles/mapbox/light-v11',center:[-74.075,4.67],zoom:10.8});
  MAPGL.addControl(new mapboxgl.NavigationControl({showCompass:false}),'top-right');
  MAPGL.on('error',e=>{const el=document.getElementById('map');if(!MAPGL.loaded()&&el&&!el.dataset.err){el.dataset.err=1;el.innerHTML='<div style="padding:40px;text-align:center;color:var(--muted);font-size:14px;">No se pudo cargar el mapa (revisa conexión o token). El buscador de barrios sigue funcionando.</div>';}});
