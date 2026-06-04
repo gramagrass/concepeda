@@ -7,7 +7,9 @@ Herramienta hiperlocal de campaña: mapa de Bogotá barrio por barrio (1.177 bar
 - `index.html` — el sitio completo (mapa Mapbox + generador de volantes + pin descargable).
 - `fichas.json` — las 96 fichas oficiales + mapas de selección (`estrato_fichas`, `uso_fichas`, `relevancia_estrato`) y contrastes. **Editar esto cambia los volantes sin tocar código.**
 - `logros.json` — base de logros para "Lo que ya logramos", etiquetados por tema. Solo logros propositivos.
-- `barrios.geojson` — capa de barrios con estrato (real, IDECA) y datos electorales (ilustrativos hasta el cruce con Registraduría).
+- `barrios.geojson` — capa de barrios con estrato (real, IDECA) y datos electorales **reales por puesto de votación**: preconteo mesa a mesa de la 1ª vuelta 2026 (Registraduría, 31-may-2026, validado voto a voto contra el resultado oficial: Cepeda 1.706.249 = 41,67%, ADLE 1.543.517 = 37,69%), cruzado con los puestos geolocalizados (IDECA) y asignado a cada barrio catastral. Retroceso (`d`) = Cepeda 2026 real − Petro 2022 real (escrutinio mesa a mesa), por puesto. Campo `src: "2026"` = dato observado. Se regenera con `etl/build_barrios_electoral.py`.
+- `etl/build_barrios_electoral.py` — pipeline reproducible que genera los datos electorales de `barrios.geojson` (y la copia embebida `BGEO` de `index.html`). Comando usado: `python3 etl/build_barrios_electoral.py --mmv2026 20260531_MMV_M11_Consolidados/PRE_MMV_9999.txt --mmv2022-2v etl/data/MMV_NACIONAL_PRESIDENTE_2022_2v.csv`. Acepta el archivo de divulgación de la Registraduría (ancho fijo, `PRE_MMV_*.txt`) o formato MMV CSV; sin `--mmv2026` cae al modo estimación (swing por localidad). Insumos en `etl/data/` (descomprimir el zip del MMV 2022 antes de correr); los archivos de datos crudos están en `.gitignore`. Requiere `shapely` y `numpy`. Cuando salga el escrutinio definitivo 2026, re-correr con ese archivo lo actualiza todo.
+- Con `--mmv2022-2v etl/data/MMV_NACIONAL_PRESIDENTE_2022_2v.csv` añade por barrio `p2` (% Petro 2ª vuelta 2022, real) y `g22` (puntos que creció Petro entre 1ª y 2ª vuelta 2022, real): el mapa del voto persuadible de cara a la 2ª vuelta del 21 de junio. Rango actual: +5 a +22 pts, mediana +11,5.
 - `bogota-localidades.geojson` — contornos de localidades.
 - `images/ivnaaida.webp` — foto de campaña usada en header y pin.
 - `contenido.json`, `banco-mensajes-programa.md`, `hoja-de-ruta.md`, `HANDOFF-DESARROLLO.md` — documentación y material de origen.
@@ -18,7 +20,6 @@ Editar `fichas.json` o `logros.json` directamente en GitHub (botón ✏️) y ha
 
 ## Datos pendientes
 
-- Cruce electoral real preconteo→barrio (Registraduría). Hoy los números son ilustrativos, calibrados a los agregados reales de Bogotá.
 - Demografía DANE por manzana para targeting por identidad (adulto mayor, jóvenes, mujeres, etnia).
 
 ## Créditos
