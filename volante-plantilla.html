@@ -1,0 +1,164 @@
+<!--
+  PLANTILLA DE VOLANTE PERSONALIZADO POR BARRIO — Bogotá
+  ------------------------------------------------------
+  Esta plantilla se rellena por barrio desde la tabla maestra del proyecto.
+  Campos de merge (reemplazar en el lote de impresión):
+    {{BARRIO}}        -> nombre del barrio (ej. "Quiroga")
+    {{LOCALIDAD}}     -> localidad (ej. "Rafael Uribe Uribe")
+    {{USO_SUELO}}     -> uso predominante (Residencial / Comercial / Industrial / Dotacional / Mixto)
+    {{PUNTO_1..3}}    -> los 3 puntos del PROGRAMA OFICIAL mapeados al uso de suelo
+    {{LEMA}}          -> lema de cierre
+  Abajo aparece un EJEMPLO YA RELLENADO (barrio Quiroga, uso residencial) para ver el resultado.
+  Los textos de programa van entre corchetes [ ]: deben sustituirse por las propuestas
+  reales del programa de gobierno oficial de Iván Cepeda antes de imprimir.
+  Tamaño: media carta (139.7 x 215.9 mm). Imprimir 2 por hoja carta.
+-->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Volante — {{BARRIO}}</title>
+<style>
+  :root{
+    --tinta:#0f2a43;
+    --acento:#e4572e;
+    --acento2:#f3a712;
+    --suave:#f4f1ea;
+    --texto:#1c2733;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:#d9d4c8;
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    color:var(--texto);
+    display:flex;justify-content:center;
+    padding:24px;
+  }
+  .volante{
+    width:139.7mm;height:215.9mm;
+    background:var(--suave);
+    position:relative;overflow:hidden;
+    display:flex;flex-direction:column;
+    box-shadow:0 8px 30px rgba(0,0,0,.18);
+  }
+  /* franja superior */
+  .cabecera{
+    background:var(--tinta);color:#fff;
+    padding:20px 22px 18px;position:relative;
+  }
+  .kicker{
+    font-size:11px;letter-spacing:3px;text-transform:uppercase;
+    color:var(--acento2);font-weight:700;
+  }
+  .barrio{
+    font-size:42px;line-height:.98;font-weight:800;margin-top:6px;
+    letter-spacing:-1px;
+  }
+  .localidad{
+    font-size:13px;margin-top:8px;opacity:.85;font-weight:500;
+  }
+  .uso-chip{
+    display:inline-block;margin-top:14px;
+    background:var(--acento);color:#fff;
+    font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+    padding:5px 12px;border-radius:20px;
+  }
+  /* cuerpo */
+  .cuerpo{padding:22px;flex:1;display:flex;flex-direction:column;}
+  .intro{
+    font-size:15px;line-height:1.4;color:var(--tinta);font-weight:600;
+    margin-bottom:18px;
+  }
+  .intro b{color:var(--acento);}
+  .punto{
+    display:flex;gap:14px;margin-bottom:16px;align-items:flex-start;
+  }
+  .num{
+    flex:0 0 auto;width:30px;height:30px;border-radius:50%;
+    background:var(--acento2);color:var(--tinta);
+    font-weight:800;font-size:15px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .punto-texto{font-size:13.5px;line-height:1.45;}
+  .punto-texto strong{display:block;color:var(--tinta);font-size:14px;margin-bottom:2px;}
+  .placeholder{color:#8a8170;font-style:italic;}
+  /* pie */
+  .pie{
+    background:var(--tinta);color:#fff;
+    padding:16px 22px;margin-top:auto;
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .lema{font-size:15px;font-weight:800;line-height:1.1;max-width:60%;}
+  .marca{
+    text-align:right;font-size:11px;line-height:1.3;opacity:.85;
+  }
+  .barra{height:6px;display:flex;}
+  .barra span{flex:1;}
+  .barra span:nth-child(1){background:var(--acento);}
+  .barra span:nth-child(2){background:var(--acento2);}
+  .barra span:nth-child(3){background:var(--tinta);}
+  @media print{
+    body{background:#fff;padding:0;}
+    .volante{box-shadow:none;}
+    @page{margin:0;}
+  }
+</style>
+</head>
+<body>
+  <div class="volante">
+    <div class="cabecera">
+      <div class="kicker">Tu barrio, tu voz</div>
+      <!-- {{BARRIO}} -->
+      <div class="barrio">Quiroga</div>
+      <!-- {{LOCALIDAD}} -->
+      <div class="localidad">Localidad de Rafael Uribe Uribe · Bogotá</div>
+      <!-- {{USO_SUELO}} -->
+      <div class="uso-chip">Barrio residencial</div>
+    </div>
+
+    <div class="cuerpo">
+      <div class="intro">
+        En <b>Quiroga</b> conocemos lo que se vive a diario. Por eso aquí
+        proponemos lo que tu barrio necesita:
+      </div>
+
+      <!-- PUNTO 1 -->
+      <div class="punto">
+        <div class="num">1</div>
+        <div class="punto-texto">
+          <strong>Vivienda y servicios</strong>
+          <span class="placeholder">[Inserte el punto del programa oficial sobre vivienda digna / servicios públicos para barrios residenciales]</span>
+        </div>
+      </div>
+
+      <!-- PUNTO 2 -->
+      <div class="punto">
+        <div class="num">2</div>
+        <div class="punto-texto">
+          <strong>Seguridad de barrio y espacio público</strong>
+          <span class="placeholder">[Inserte el punto del programa oficial sobre seguridad de proximidad / parques / cuidado]</span>
+        </div>
+      </div>
+
+      <!-- PUNTO 3 -->
+      <div class="punto">
+        <div class="num">3</div>
+        <div class="punto-texto">
+          <strong>Cuidado y comunidad</strong>
+          <span class="placeholder">[Inserte el punto del programa oficial sobre sistema de cuidado / primera infancia / adulto mayor]</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pie">
+      <!-- {{LEMA}} -->
+      <div class="lema">Quiroga merece ser escuchado.</div>
+      <div class="marca">
+        [Logo / nombre de campaña]<br>
+        [Línea legal · tarjetón]
+      </div>
+    </div>
+    <div class="barra"><span></span><span></span><span></span></div>
+  </div>
+</body>
+</html>

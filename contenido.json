@@ -1,0 +1,259 @@
+{
+  "_meta": {
+    "descripcion": "Fuente única de contenido para la generación de volantes. El sitio lee este archivo en tiempo real. Cada campo está pensado para revisión de estilo: editar el texto aquí cambia los volantes en todas las ciudades. NO inventar datos: las cifras de la columna 'contraste' vienen del documento público de propuestas de cada candidato.",
+    "campaña": "Iván Cepeda Presidente 2026-2030 · Segunda vuelta",
+    "version": "0.1-borrador",
+    "ultima_revision_estilo": null,
+    "tono": "Directo, cálido, propositivo. Sirve como guion para conversación puerta a puerta. Primero la propuesta de Cepeda, luego el logro del gobierno, y solo al final el contraste — nunca abrir con el ataque.",
+    "leyenda_uso_suelo": ["Residencial", "Comercial", "Dotacional", "Industrial", "Mixto"]
+  },
+
+  "logros_gobierno": [
+    {
+      "id": "salario_minimo",
+      "titular": "El salario mínimo subió como nunca",
+      "guion": "En estos cuatro años el salario mínimo pasó de subir poco o nada a tener el aumento más alto de la historia reciente: +16% en 2023, +12% en 2024, +9,5% en 2025 y +23,7% en 2026, hasta llegar a cerca de $2.000.000 con auxilio de transporte. En el gobierno anterior, el salario mínimo real cayó. Continuar con Cepeda es continuar este camino.",
+      "dato": "+23,7% en 2026 (~$2.000.000). Alza real ~17,7% entre 2023 y 2025; el gobierno anterior la dejó caer 1,4%.",
+      "fuente_dato": "Decretos de salario mínimo 2023-2026; comparación 2019-2022"
+    },
+    {
+      "id": "salario_vital",
+      "titular": "Se decretó el salario vital",
+      "guion": "Por primera vez el salario mínimo se calcula a partir de la canasta básica que una familia necesita para vivir, no de una negociación a puerta cerrada. La idea es simple: que el sueldo alcance para vivir, no apenas para sobrevivir.",
+      "dato": "Salario mínimo 2026 fijado por primera vez con base en la canasta mínima vital.",
+      "fuente_dato": "Anuncio de salario mínimo 2026"
+    },
+    {
+      "id": "colombia_mayor",
+      "titular": "Más apoyo para los adultos mayores",
+      "guion": "Se duplicó el subsidio a los adultos mayores a través del programa Colombia Mayor, llegando a 1.100.000 personas. Es respaldo concreto para quienes ya dieron toda una vida de trabajo.",
+      "dato": "Subsidio a adultos mayores duplicado; 1.100.000 beneficiarios (Colombia Mayor).",
+      "fuente_dato": "Programa de gobierno Cepeda 2026-2030"
+    }
+  ],
+
+  "temas": [
+    {
+      "id": "empleo_salario",
+      "titulo": "Trabajo digno y salario que alcance",
+      "icono": "ti-briefcase",
+      "uso_suelo": ["Comercial", "Industrial", "Residencial", "Mixto"],
+      "cepeda": {
+        "titular": "Que el trabajo dé para vivir",
+        "guion": "Cepeda propone seguir fortaleciendo el ingreso de la gente: salario digno, formalización del trabajo y apoyo a la economía popular. La apuesta es que la plata circule en el barrio, no que se concentre arriba.",
+        "puntos": ["Continuar el alza del salario mínimo y el salario vital", "Formalizar el empleo y proteger al trabajador informal", "Economía popular: que las comunidades contraten con el Estado"]
+      },
+      "gobierno": "salario_minimo",
+      "contraste": {
+        "abelardo_dice": "Propone centrar la economía en un 'ajuste fiscal' que reduce el tamaño del Estado hasta en una cuarta parte (unos $70 billones), desregulación pro-empresa y reducción de la carga tributaria, con la meta de crecer al 7%.",
+        "en_una_linea": "De la Espriella quiere recortar el Estado en una cuarta parte —$70 billones menos para lo que tu familia necesita—. Cepeda te sube el salario; su plan te aprieta el bolsillo.",
+        "fuente": "Propuestas De la Espriella, ejes 'Economía' y 'Macroeconomía y lo fiscal'"
+      }
+    },
+    {
+      "id": "salud",
+      "titulo": "Salud como derecho, no como negocio",
+      "icono": "ti-heartbeat",
+      "uso_suelo": ["Residencial", "Dotacional", "Mixto"],
+      "cepeda": {
+        "titular": "Salud para la gente, no para el negocio",
+        "guion": "Cepeda propone una salud pública que ponga al paciente —y no la ganancia de los intermediarios— en el centro: fortalecer hospitales y centros de salud, y garantizar la atención primaria cerca de tu casa.",
+        "puntos": ["Fortalecer la red pública de hospitales y centros de salud", "Atención primaria de cercanía en el barrio", "Acabar con la salud convertida en negocio"]
+      },
+      "gobierno": null,
+      "contraste": {
+        "abelardo_dice": "Propone un plan de choque de $10 billones y conservar el modelo de EPS, mejorándolo por la vía administrativa (topes a gastos, revisión de la UPC, 'transición responsable que preserve lo que funciona').",
+        "en_una_linea": "De la Espriella le apuesta a rescatar a las mismas EPS que tienen la salud en crisis. Cepeda las pone a un lado y pone tu salud de primero.",
+        "fuente": "Propuestas De la Espriella, eje 'Salud'"
+      }
+    },
+    {
+      "id": "educacion",
+      "titulo": "Educación pública y gratuita",
+      "icono": "ti-school",
+      "uso_suelo": ["Dotacional", "Residencial", "Mixto"],
+      "cepeda": {
+        "titular": "Educación pública, gratuita y de calidad",
+        "guion": "Cepeda propone defender la educación como un derecho y no como un negocio: del colegio a la universidad pública, también para los barrios populares, para que estudiar no dependa del bolsillo de la familia.",
+        "puntos": ["Educación pública gratuita, del colegio a la universidad", "Universidad pública también para sectores populares", "Más presupuesto para la educación"]
+      },
+      "gobierno": null,
+      "contraste": {
+        "abelardo_dice": "Propone ciclos cortos en tecnologías de cuarta revolución industrial, evaluación docente, créditos blandos por mérito, una 'Universidad Virtual en Casa' e incentivos fiscales a la inversión privada en la educación pública.",
+        "en_una_linea": "Para De la Espriella, estudiar es un crédito que pagas tú y un cupo solo para los 'mejores'. Para Cepeda, la educación pública es un derecho gratuito para todos.",
+        "fuente": "Propuestas De la Espriella, eje 'Educación'"
+      }
+    },
+    {
+      "id": "vivienda",
+      "titulo": "Vivienda digna",
+      "icono": "ti-home",
+      "uso_suelo": ["Residencial", "Mixto"],
+      "cepeda": {
+        "titular": "Un techo digno al alcance",
+        "guion": "Cepeda propone un programa masivo de vivienda para las familias sin techo y una apuesta especial por la vivienda para los jóvenes, para que tener dónde vivir deje de ser una lucha imposible.",
+        "puntos": ["Programa masivo de vivienda para familias sin techo", "Vivienda pensada para los jóvenes"]
+      },
+      "gobierno": null,
+      "contraste": {
+        "abelardo_dice": "Propone el programa 'País de propietarios': crédito para comprar vivienda con intereses del 2% a 30 años.",
+        "en_una_linea": "De la Espriella te ofrece quedar 30 años endeudado para tener casa. Cepeda impulsa vivienda para las familias y los jóvenes que hoy no tienen techo.",
+        "fuente": "Propuestas De la Espriella, eje 'Economía'"
+      }
+    },
+    {
+      "id": "agua_servicios",
+      "titulo": "Agua y servicios públicos como derecho",
+      "icono": "ti-droplet",
+      "uso_suelo": ["Residencial", "Mixto"],
+      "cepeda": {
+        "titular": "El agua es un derecho, no un negocio",
+        "guion": "Cepeda propone garantizar el acceso universal al agua potable y al saneamiento como un derecho humano fundamental, y servicios públicos dignos para todos los barrios.",
+        "puntos": ["Acceso universal al agua potable y saneamiento", "Servicios públicos dignos en cada barrio"]
+      },
+      "gobierno": null,
+      "contraste": {
+        "abelardo_dice": "No desarrolla el agua y los servicios públicos domiciliarios como eje; su foco en este campo es energético (petróleo, gas, nuclear) y la reducción de tarifas vía mercado.",
+        "en_una_linea": "De la Espriella ni siquiera pone el agua como prioridad. Para Cepeda es un derecho, no un negocio.",
+        "fuente": "Propuestas De la Espriella (no figura como eje propio)"
+      }
+    },
+    {
+      "id": "seguridad_humana",
+      "titulo": "Seguridad humana",
+      "icono": "ti-shield-heart",
+      "uso_suelo": ["Residencial", "Comercial", "Mixto"],
+      "cepeda": {
+        "titular": "Seguridad que nace de tener derechos",
+        "guion": "Cepeda propone la seguridad humana: la que se construye con oportunidades, presencia del Estado, derechos y un barrio cuidado —no solo con más armas. Seguridad de verdad y duradera.",
+        "puntos": ["Seguridad basada en derechos y oportunidades", "Presencia integral del Estado en el barrio", "Seguridad alimentaria"]
+      },
+      "gobierno": null,
+      "contraste": {
+        "abelardo_dice": "Propone mano dura: fumigación aérea, recuperar el monopolio de las armas, 'con los criminales no habrá negociación', y califica la Paz Total de 'traición a la Patria'.",
+        "en_una_linea": "De la Espriella promete más guerra —fumigación, más armas y cero diálogo—, la misma receta que nunca trajo paz. Cepeda construye seguridad con oportunidades y Estado presente.",
+        "fuente": "Propuestas De la Espriella, eje 'Seguridad'"
+      }
+    },
+    {
+      "id": "economia_popular",
+      "titulo": "Economía popular",
+      "icono": "ti-building-store",
+      "uso_suelo": ["Comercial", "Industrial", "Mixto"],
+      "cepeda": {
+        "titular": "Tu negocio de barrio importa",
+        "guion": "Cepeda propone poner la economía popular en el centro: que las comunidades, los vendedores y los pequeños negocios puedan contratar con el Estado y recibir apoyo real, no ser simples espectadores.",
+        "puntos": ["Contratación pública con rostro comunitario", "Apoyo y crédito a la economía popular", "Que la riqueza se quede en el barrio"]
+      },
+      "gobierno": null,
+      "contraste": {
+        "abelardo_dice": "Propone una 'gran revolución de desregulación' (por cada norma nueva, eliminar dos), reducir trámites y cargas al sector empresarial y un fuerte ajuste fiscal.",
+        "en_una_linea": "De la Espriella quita las reglas para que el gran empresario gane más. Cepeda apoya el trabajo y el negocio de tu barrio.",
+        "fuente": "Propuestas De la Espriella, eje 'Economía'"
+      }
+    },
+    {
+      "id": "cuidado",
+      "titulo": "Sistema de cuidado",
+      "icono": "ti-heart-handshake",
+      "uso_suelo": ["Residencial", "Dotacional", "Mixto"],
+      "cepeda": {
+        "titular": "El cuidado sostiene la vida",
+        "guion": "Cepeda propone un sistema de cuidado que reconozca y acompañe a quienes cuidan —sobre todo a las mujeres— y a quienes necesitan cuidado. Atacar la desigualdad desde donde realmente empieza.",
+        "puntos": ["Reconocer el trabajo de cuidado no remunerado", "Acompañamiento a cuidadoras y a quien necesita cuidado"]
+      },
+      "gobierno": null,
+      "contraste": {
+        "abelardo_dice": "También propone un registro nacional del cuidado, formación para 200.000 cuidadoras y subsidios a cuidadores vulnerables, enmarcados en 'monetizar la economía del cuidado'.",
+        "en_una_linea": "De la Espriella ve el cuidado como un negocio para formalizar. Cepeda lo reconoce como un derecho y descarga el peso que hoy recae sobre las mujeres.",
+        "fuente": "Propuestas De la Espriella, eje 'Las mujeres'"
+      }
+    },
+    {
+      "id": "juventud",
+      "titulo": "Oportunidades para los jóvenes",
+      "icono": "ti-users",
+      "uso_suelo": ["Dotacional", "Residencial", "Mixto"],
+      "cepeda": {
+        "titular": "Que ser joven no sea elegir entre estudiar o trabajar",
+        "guion": "Cepeda propone garantizar a la juventud educación, vivienda y transporte para que ningún joven tenga que abandonar el estudio por falta de recursos. Oportunidades reales, en tu barrio.",
+        "puntos": ["Educación, vivienda y transporte garantizados para jóvenes", "Que estudiar no sea un privilegio"]
+      },
+      "gobierno": null,
+      "contraste": {
+        "abelardo_dice": "Propone créditos blandos por mérito, ciclos cortos tecnológicos y un bono cultural 'Pase mi cultura' para jóvenes de 18-19 años.",
+        "en_una_linea": "De la Espriella deja a la juventud a punta de crédito y 'mérito' para unos pocos. Cepeda garantiza estudio, vivienda y transporte para todos los jóvenes.",
+        "fuente": "Propuestas De la Espriella, ejes 'Educación' y 'Cultura'"
+      }
+    },
+    {
+      "id": "energia",
+      "titulo": "Energía limpia y tarifas justas",
+      "icono": "ti-bolt",
+      "uso_suelo": ["Residencial", "Industrial", "Mixto"],
+      "cepeda": {
+        "titular": "Energía limpia que baja el recibo",
+        "guion": "Cepeda propone una transición hacia energías limpias que reduzcan las tarifas y garanticen acceso digno, cuidando el ambiente y el bolsillo al mismo tiempo.",
+        "puntos": ["Energía limpia que reduce tarifas", "Acceso energético digno", "Cuidar el ambiente y el recibo a la vez"]
+      },
+      "gobierno": null,
+      "contraste": {
+        "abelardo_dice": "Propone recuperar la exploración y producción de petróleo y gas, una política de energía nuclear, fracking 'evaluado con rigor' y defender a Ecopetrol como activo estratégico.",
+        "en_una_linea": "De la Espriella te ofrece más petróleo, fracking y hasta energía nuclear. Cepeda apuesta por energía limpia que además baja tu recibo de la luz.",
+        "fuente": "Propuestas De la Espriella, eje 'Minero-energética'"
+      }
+    },
+    {
+      "id": "anticorrupcion",
+      "titulo": "Cero corrupción",
+      "icono": "ti-gavel",
+      "uso_suelo": ["Comercial", "Residencial", "Industrial", "Dotacional", "Mixto"],
+      "cepeda": {
+        "titular": "Lo que se roban es tu salud, tu agua, tu educación",
+        "guion": "Cepeda propone una revolución ética: acabar con sobornos, 'cupos indicativos' y bonificaciones, porque cada peso robado es un peso que no llegó a la salud, al agua o a la educación de tu barrio.",
+        "puntos": ["Fin a sobornos y 'cupos indicativos'", "Recursos públicos para derechos, no para corruptos"]
+      },
+      "gobierno": null,
+      "contraste": {
+        "abelardo_dice": "También hace de la anticorrupción un eje: un 'Bloque de Búsqueda contra la Corrupción' dirigido por el presidente, extinción de dominio exprés y contratación pública por blockchain a 2030.",
+        "en_una_linea": "El 'bloque anticorrupción' de De la Espriella lo manejaría el propio presidente: más poder en una sola mano. Cepeda combate la corrupción transformando el Estado, no concentrándolo.",
+        "fuente": "Propuestas De la Espriella, eje 'Anticorrupción'"
+      }
+    },
+    {
+      "id": "ciudad",
+      "titulo": "Una ciudad a escala humana",
+      "icono": "ti-building-community",
+      "uso_suelo": ["Residencial", "Comercial", "Dotacional", "Industrial", "Mixto"],
+      "cepeda": {
+        "titular": "Una ciudad hecha con la gente",
+        "guion": "Cepeda propone ciudades pensadas para la vida y a la medida del barrio —no solo de cemento—, que reconozcan el esfuerzo de las comunidades que las construyeron. Es la herencia de la Bogotá Humana, llevada a todo el país.",
+        "puntos": ["Ciudades para la vida, a escala del barrio", "Reconocer a las comunidades que construyeron la ciudad"]
+      },
+      "gobierno": null,
+      "contraste": {
+        "abelardo_dice": "Enmarca lo urbano principalmente desde la seguridad ('Primera Línea de Seguridad', Bloque contra la Extorsión) y el crecimiento económico, no desde el urbanismo del cuidado.",
+        "en_una_linea": "Para De la Espriella la ciudad es más policía y más mercado. Cepeda la hace con la gente y para la vida.",
+        "fuente": "Propuestas De la Espriella, ejes 'Seguridad' y 'Economía'"
+      }
+    }
+  ],
+
+  "uso_suelo_map": {
+    "Residencial": ["agua_servicios", "vivienda", "salud", "seguridad_humana", "empleo_salario", "ciudad"],
+    "Comercial": ["economia_popular", "empleo_salario", "seguridad_humana", "anticorrupcion"],
+    "Dotacional": ["educacion", "salud", "juventud", "cuidado"],
+    "Industrial": ["empleo_salario", "energia", "economia_popular", "anticorrupcion"],
+    "Mixto": ["agua_servicios", "economia_popular", "vivienda", "salud"]
+  },
+
+  "_meta_estrato": "El estrato socioeconómico (1-6, dato real de IDECA) es el factor de clase que mejor explica el voto: a mayor estrato, mayor voto a De la Espriella y mayor retroceso frente a Petro 2022. El volante usa los PRIMEROS DOS puntos según el estrato del barrio y el TERCERO según el uso de suelo mayoritario. Editar las listas cambia qué ejes lideran en cada clase. Estratos 1-2 = popular; 3 = media (franja decisiva); 4 = media; 5-6 = alta.",
+  "estrato_map": {
+    "1": ["vivienda", "agua_servicios", "economia_popular", "salud", "empleo_salario"],
+    "2": ["empleo_salario", "economia_popular", "salud", "vivienda", "seguridad_humana"],
+    "3": ["empleo_salario", "salud", "educacion", "seguridad_humana", "vivienda"],
+    "4": ["educacion", "salud", "seguridad_humana", "anticorrupcion", "ciudad"],
+    "5": ["anticorrupcion", "educacion", "ciudad", "energia", "seguridad_humana"],
+    "6": ["anticorrupcion", "ciudad", "energia", "educacion", "seguridad_humana"]
+  }
+}

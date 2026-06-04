@@ -1,0 +1,369 @@
+{
+ "_meta": {
+  "fuente": "«Los 100 logros de Petro» (pieza oficial de campaña/gobierno). Cifras transcritas del documento; varias corresponden a metas o datos proyectados a 2026 — conviene verificarlas antes de imprimir en masa.",
+  "uso": "Alimenta la caja «Lo que ya logramos» del volante. Se elige UN logro por barrio: el que mejor refuerza la ficha que lidera ese volante (campo 'temas' = ids de fichas). Editar/añadir aquí cambia los logros sin tocar código.",
+  "seleccion": "El volante busca el primer logro cuyo 'temas' incluya la 1.ª ficha del barrio; si no hay, prueba la 2.ª y 3.ª; si nada calza, usa el logro 'pobreza' (universal).",
+  "actualizado": "2026-06-03",
+  "tono": "SOLO logros propositivos y en positivo: nada de 'quitar', sanciones ni marcos punitivos. Lo que se suma, se construye o se mejora."
+ },
+ "logros": [
+  {
+   "id": "salario-vital",
+   "sector": "Trabajadores",
+   "titular": "El salario mínimo es hoy un salario vital de $2 millones",
+   "dato": "Un aumento histórico pensado para el bolsillo de los trabajadores.",
+   "temas": [
+    "salario-vital",
+    "economia-popular"
+   ]
+  },
+  {
+   "id": "pobreza",
+   "sector": "Trabajadores",
+   "titular": "793.000 colombianos salieron de la pobreza en un solo año",
+   "dato": "La pobreza multidimensional bajó a 9,9% en 2025: un solo dígito por primera vez.",
+   "temas": [
+    "salario-vital",
+    "economia-popular",
+    "vivienda-habitat",
+    "politica-de-igualdad-sustantiva-y-superacion-de-la-pobreza"
+   ]
+  },
+  {
+   "id": "desempleo",
+   "sector": "Trabajadores",
+   "titular": "El desempleo más bajo del siglo",
+   "dato": "En febrero de 2026 la tasa de desempleo se ubicó en 9,2%.",
+   "temas": [
+    "economia-popular",
+    "salario-vital"
+   ]
+  },
+  {
+   "id": "jornada-nocturna",
+   "sector": "Trabajadores",
+   "titular": "Recuperamos derechos laborales que se habían perdido",
+   "dato": "La jornada nocturna vuelve a iniciar a las 7:00 p.m. y los recargos de dominicales y festivos avanzan hacia el 100%.",
+   "temas": [
+    "salario-vital"
+   ]
+  },
+  {
+   "id": "contratos-sena",
+   "sector": "Trabajadores",
+   "titular": "Más de 377 mil contratos de aprendizaje del SENA",
+   "dato": "Contrato Laboral Especial y de Aprendizaje del SENA, a corte de diciembre.",
+   "temas": [
+    "economia-popular",
+    "jovenes",
+    "salario-vital"
+   ]
+  },
+  {
+   "id": "madres-cabeza",
+   "sector": "Mujeres",
+   "titular": "El subsidio a las madres cabeza de hogar subió de $160 mil a $500 mil",
+   "dato": "Llega a 700 mil madres con hijos menores de seis años o en condición de discapacidad.",
+   "temas": [
+    "cuidado",
+    "ninez-alimentacion",
+    "violencias",
+    "economia"
+   ]
+  },
+  {
+   "id": "exmadres-comunitarias",
+   "sector": "Mujeres",
+   "titular": "Pensión digna para las madres comunitarias",
+   "dato": "El subsidio de sustitución pensional subió al 95% de un salario mínimo; ya beneficia a 17.106 exmadres comunitarias.",
+   "temas": [
+    "cuidado",
+    "adulto-mayor",
+    "economia"
+   ]
+  },
+  {
+   "id": "salud-presupuesto",
+   "sector": "Salud",
+   "titular": "El presupuesto de salud creció 51,4%",
+   "dato": "Pasó de $48,5 billones en 2022 a $73,5 billones para 2026.",
+   "temas": [
+    "salud-sin-intermediarios",
+    "ficha-salud-medicamentos-y-soberania"
+   ]
+  },
+  {
+   "id": "salud-equipos",
+   "sector": "Salud",
+   "titular": "La salud llegó a tu casa: 11.000 Equipos Básicos de Salud",
+   "dato": "Más de 90.000 profesionales atienden a 9 millones de hogares en todo el país.",
+   "temas": [
+    "salud-sin-intermediarios",
+    "ficha-salud-salud-preventiva"
+   ]
+  },
+  {
+   "id": "salud-materna",
+   "sector": "Salud",
+   "titular": "Bajó la mortalidad materna e infantil",
+   "dato": "La mortalidad materna se redujo 30% (de 278 a 195) y la mortalidad por desnutrición infantil cayó 59,7%.",
+   "temas": [
+    "salud-sin-intermediarios",
+    "ninez-alimentacion"
+   ]
+  },
+  {
+   "id": "ambulancias",
+   "sector": "Salud",
+   "titular": "Más de 1.550 ambulancias nuevas para los municipios",
+   "dato": "Entregadas a casi todos los municipios de Colombia.",
+   "temas": [
+    "salud-sin-intermediarios"
+   ]
+  },
+  {
+   "id": "educacion-presupuesto",
+   "sector": "Educación",
+   "titular": "Presupuesto histórico para la educación pública: $15 billones",
+   "dato": "Para transformar el futuro de niñas, niños y jóvenes de Colombia.",
+   "temas": [
+    "educacion-derecho",
+    "jovenes",
+    "calidad-de-la-educacion-y-ninez"
+   ]
+  },
+  {
+   "id": "educacion-prejardin",
+   "sector": "Educación",
+   "titular": "Por primera vez hay prejardín y jardín en los colegios públicos",
+   "dato": "Se vincularon 5.404 docentes para atender a más de 128.000 niños y niñas.",
+   "temas": [
+    "educacion-derecho",
+    "ninez-alimentacion"
+   ]
+  },
+  {
+   "id": "educacion-superior",
+   "sector": "Educación",
+   "titular": "Más universidad pública para los barrios populares",
+   "dato": "$6,9 billones en 114 obras de educación superior y reforma a la Ley 30 con $4,22 billones para las universidades públicas.",
+   "temas": [
+    "educacion-derecho",
+    "jovenes",
+    "formacion-integral-ciencia-tecnologia-e-innovacion"
+   ]
+  },
+  {
+   "id": "energia-tarifas",
+   "sector": "Transición energética",
+   "titular": "Bajó la tarifa de la luz",
+   "dato": "Las tarifas de energía bajaron más del 16% en el país y por encima del 28% en la región Caribe.",
+   "temas": [
+    "energia"
+   ]
+  },
+  {
+   "id": "energia-limpia",
+   "sector": "Transición energética",
+   "titular": "La energía limpia se multiplicó y nacieron las comunidades energéticas",
+   "dato": "La energía limpia pasó del 2% al 16% de la matriz eléctrica; se crearon casi 300 comunidades energéticas.",
+   "temas": [
+    "energia",
+    "transicion-energetica-el-futuro-se-decide-hoy",
+    "defensa-de-la-vida-el-agua-y-los-ecosistemas"
+   ]
+  },
+  {
+   "id": "agua-inversion",
+   "sector": "Vivienda",
+   "titular": "Inversión histórica por el derecho al agua: $8,9 billones",
+   "dato": "1,3 millones de personas con nuevo acceso a saneamiento básico en zonas rurales y urbanas.",
+   "temas": [
+    "agua-servicios"
+   ]
+  },
+  {
+   "id": "vivienda-deficit",
+   "sector": "Vivienda",
+   "titular": "$7,4 billones para 878 mil soluciones de vivienda",
+   "dato": "El déficit habitacional bajó de 30,4% a 26,8%: el 80% de la meta del cuatrienio en la mitad del periodo.",
+   "temas": [
+    "vivienda-habitat",
+    "revolucion-urbana-barrios-seguros-comunidades-fuertes"
+   ]
+  },
+  {
+   "id": "vivienda-mejoramiento",
+   "sector": "Vivienda",
+   "titular": "127 mil hogares mejoraron su vivienda",
+   "dato": "$1,8 billones para mejorar las casas que las familias levantaron con su propio esfuerzo.",
+   "temas": [
+    "vivienda-habitat"
+   ]
+  },
+  {
+   "id": "jovenes-en-paz",
+   "sector": "Paz y seguridad",
+   "titular": "Jóvenes en Paz aleja de la guerra a más de 30.000 jóvenes",
+   "dato": "Oportunidades en lugar de reclutamiento para la juventud de los barrios.",
+   "temas": [
+    "seguridad-urbana",
+    "jovenes",
+    "seguridad-y-no-reclutamiento",
+    "revolucion-urbana-barrios-seguros-comunidades-fuertes",
+    "seguridad-humana-integral-paradigma-avances-y-propuestas-territoriales"
+   ]
+  },
+  {
+   "id": "servicio-social-paz",
+   "sector": "Paz y seguridad",
+   "titular": "Nació el Servicio Social para la Paz",
+   "dato": "Los bachilleres ahora pueden servir al país construyendo paz; el servicio militar dejó de ser obligatorio.",
+   "temas": [
+    "jovenes",
+    "seguridad-urbana"
+   ]
+  },
+  {
+   "id": "tren-cercanias",
+   "sector": "Transporte",
+   "titular": "Volvió el tren a Colombia",
+   "dato": "Trenes de cercanías Zipaquirá–Bogotá y Facatativá–Bogotá, y reactivación del corredor La Dorada–Chiriguaná (526 km).",
+   "temas": [
+    "movilidad",
+    "ferrocarril-y-transporte-intermodal",
+    "revolucion-urbana-ciudades-sostenibles-naturaleza-viva-y-justicia-ambiental"
+   ]
+  },
+  {
+   "id": "internet-fibra",
+   "sector": "Territorios",
+   "titular": "Internet de alta velocidad para las zonas olvidadas",
+   "dato": "4.800 km de nueva fibra óptica y 387 Comunidades de Conectividad llevando internet donde nunca llegó.",
+   "temas": [
+    "movilidad",
+    "educacion-derecho",
+    "economia-popular"
+   ]
+  },
+  {
+   "id": "inflacion-alimentos",
+   "sector": "Campesinado",
+   "titular": "Bajó el precio de la comida",
+   "dato": "La inflación de alimentos pasó de 25,57% en 2022 a 6,27% en marzo de 2026.",
+   "temas": [
+    "economia-popular",
+    "salario-vital",
+    "politica-de-igualdad-sustantiva-y-superacion-de-la-pobreza"
+   ]
+  },
+  {
+   "id": "adulto-mayor-bono",
+   "sector": "Vejez",
+   "titular": "El bono para los adultos mayores casi se triplicó",
+   "dato": "3 millones de adultos mayores ahora reciben un bono de $230.000 mensuales (antes era de $80.000).",
+   "temas": [
+    "adulto-mayor",
+    "cuidado",
+    "memoria-salud-y-participacion"
+   ]
+  },
+  {
+   "id": "mipymes",
+   "sector": "Economía",
+   "titular": "Apoyo directo a más de 66.000 pequeñas y medianas empresas",
+   "dato": "Financiamiento para que las mipymes crezcan, suban su productividad y se sostengan.",
+   "temas": [
+    "economia-popular",
+    "salario-vital",
+    "microcredito-para-microempresas-familiares",
+    "prosperidad-compartida-con-el-empresariado"
+   ]
+  },
+  {
+   "id": "internet-cobertura",
+   "sector": "Economía",
+   "titular": "Más internet para todos",
+   "dato": "La cobertura de internet subió de 59,5% a 73,9%, con una inversión histórica de $3,3 billones en conectividad.",
+   "temas": [
+    "educacion-derecho",
+    "movilidad",
+    "formacion-integral-ciencia-tecnologia-e-innovacion"
+   ]
+  },
+  {
+   "id": "bolsa",
+   "sector": "Economía",
+   "titular": "La Bolsa de Colombia, una de las más rentables del mundo",
+   "dato": "Cerró 2025 entre las bolsas más rentables del mundo: confianza y manejo económico serio.",
+   "temas": [
+    "anticorrupcion",
+    "austeridad-republicana-y-etica-publica",
+    "prosperidad-compartida-con-el-empresariado"
+   ]
+  },
+  {
+   "id": "deuda-fmi",
+   "sector": "Economía",
+   "titular": "Colombia pagó toda su deuda con el FMI",
+   "dato": "Se pagó en su totalidad la deuda con el FMI, cercana a los 8 mil millones de dólares: finanzas públicas responsables.",
+   "temas": [
+    "anticorrupcion",
+    "austeridad-republicana-y-etica-publica",
+    "prosperidad-compartida-con-el-empresariado"
+   ]
+  },
+  {
+   "id": "dolar",
+   "sector": "Economía",
+   "titular": "El dólar, $700 más barato que hace 4 años",
+   "dato": "Nuestra moneda se ha fortalecido: estabilidad para la economía de todos.",
+   "temas": [
+    "anticorrupcion",
+    "economia-popular",
+    "prosperidad-compartida-con-el-empresariado"
+   ]
+  },
+  {
+   "id": "amazonia",
+   "sector": "Ambiente",
+   "titular": "Primer país en proteger su Amazonía de la minería",
+   "dato": "Colombia protegió 483.000 km² de bioma amazónico frente a la minería y los hidrocarburos, y recuperó 454.000 hectáreas de bosques.",
+   "temas": [
+    "defensa-de-la-vida-el-agua-y-los-ecosistemas",
+    "transicion-energetica-el-futuro-se-decide-hoy",
+    "seres-sintientes-no-objetos"
+   ]
+  },
+  {
+   "id": "cop16",
+   "sector": "Ambiente",
+   "titular": "Cali fue sede de la COP16, el evento ambiental más importante del mundo",
+   "dato": "Colombia lo organizó con total éxito, posicionándose como potencia mundial de la vida.",
+   "temas": [
+    "defensa-de-la-vida-el-agua-y-los-ecosistemas",
+    "revolucion-urbana-ciudades-sostenibles-naturaleza-viva-y-justicia-ambiental"
+   ]
+  },
+  {
+   "id": "intercolegiados",
+   "sector": "Deporte",
+   "titular": "2,7 millones de niños y jóvenes en los Juegos Intercolegiados",
+   "dato": "Se ejecutaron en todas sus fases; además avanzan 69 escenarios deportivos que impactarán a más de 2 millones de personas.",
+   "temas": [
+    "ficha-actividad-fisica-recreacion-y-deporte-el-deporte-como-derecho",
+    "calidad-de-la-educacion-y-ninez"
+   ]
+  },
+  {
+   "id": "campesinos-sena",
+   "sector": "Campesinado",
+   "titular": "400.000 campesinos se formaron y 350.000 certificaron sus saberes",
+   "dato": "El SENA convirtió la experiencia del campo en títulos oficiales para progresar.",
+   "temas": [
+    "economias-creativas-artistas-y-trabajadores-de-la-cultura",
+    "microcredito-para-microempresas-familiares"
+   ]
+  }
+ ]
+}
