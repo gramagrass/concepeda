@@ -26,5 +26,5 @@ Alternativa: editar `fichas.json` o `logros.json` directamente en GitHub (botón
 
 ## Créditos
 
-por: [grama.co](https://grama.co) | [@gramagrass_](https://instagram.com/gramagrass_)
+por: [grama.co](https://grama.co) | [@gramagrass_](https://x.com/gramagrass_)
 Datos: IDECA · Catastro Bogotá, Registraduría Nacional, Mapbox/OSM. Contenido: campaña Iván Cepeda + Aída Quilcué.
