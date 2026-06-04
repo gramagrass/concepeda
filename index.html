@@ -98,7 +98,7 @@
   .cu-input:focus,.cu-sel:focus{border-color:var(--tinta);outline:none;}
   .pin{width:270px;height:270px;}
   .pin-t{font-family:'boldfinger',Arial,sans-serif;font-size:17px;fill:#fff;letter-spacing:1.5px;}
-  .pin-c{font-family:'boldfinger',Arial,sans-serif;font-size:36px;fill:var(--acento);letter-spacing:3px;}
+  .pin-c{font-family:'boldfinger',Arial,sans-serif;font-size:41px;fill:#fff;letter-spacing:3.5px;}
   .volante{width:100%;max-width:720px;aspect-ratio:215.9/279.4;margin:0;flex:0 0 auto;background:var(--bg);border-radius:6px;overflow:hidden;box-shadow:0 8px 26px rgba(0,0,0,.18);display:flex;flex-direction:column;}
   .v-cab{background:var(--tinta);color:#fff;padding:20px 30px;position:relative;min-height:170px;display:flex;align-items:center;overflow:hidden;}
   .v-cabtxt{position:relative;z-index:2;max-width:60%;}
@@ -437,11 +437,11 @@ function render(){const x=cur, full=true, showProps=TC.checked;
  const logro=Lg?`<div class="v-logro"><div class="k">Lo que ya logramos</div><strong>${Lg.titular}</strong><span>${Lg.dato}</span></div>`:'';
  const arco=(name.toUpperCase()+' CON');
  const fs=arco.length>24?12.5:arco.length>17?14.5:17;
- const pin=`<svg class="pin" viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg"><defs><path id="aT" d="M 30,150 A 110,110 0 0 1 250,150"/><path id="aB" d="M 38,146 A 102,102 0 0 0 242,146"/><clipPath id="cf"><circle cx="140" cy="140" r="127"/></clipPath></defs><circle cx="140" cy="140" r="138" fill="var(--tinta)"/><circle cx="140" cy="140" r="131" fill="none" stroke="var(--acento)" stroke-width="3"/><image href="images/ivnaaida.webp" x="4" y="49" width="271" height="159" clip-path="url(#cf)" preserveAspectRatio="xMidYMax meet"/><text class="pin-t" style="font-size:${fs}px"><textPath href="#aT" startOffset="50%" text-anchor="middle">${arco}</textPath></text><text class="pin-c"><textPath href="#aB" startOffset="50%" text-anchor="middle">CEPEDA</textPath></text></svg>`;
- P.innerHTML=`<div class="pv-grid"><div class="vol-fit"><div class="volante"><div class="v-cab"><div class="v-cabtxt"><div class="v-kicker">EL PODER DE LA VERDAD</div><div class="v-barrio">${name.toUpperCase()} CON</div><div class="v-cepeda">CEPEDA</div></div><img class="v-foto" src="images/ivnaaida.webp" alt=""></div><div class="v-body">${logro}${puntos}<div class="v-fuente">Propuestas tomadas de la Caja de herramientas oficial · presidenteivancepeda.com/cajadeherramientas</div></div><div class="v-pie"><div class="v-lema">En segunda vuelta, vota Cepeda.</div><div class="v-ph"><div class="ph-word"><span class="o">P</span><span class="b">A</span><span class="r">C</span><span class="g">T</span><span class="p">O</span></div><div class="ph-sub">HISTÓRICO</div></div></div><div class="v-barra"><span></span><span></span><span></span></div></div></div><div class="lado">${(()=>{const bx=cur;if(!bx)return'';const m26=bx.c-bx.a;const[dc]=est(bx.d);return `<div class="bpanel"><div class="bn">${bx.b}</div><div class="bl">${bx.loc} · UPZ ${bx.upz} · ${bx.uso}</div><div class="row"><span>Estrato</span><b>${bx.estrato}</b></div><div class="row big"><span>Cepeda</span><b>${bx.c}%</b></div><div class="row big"><span>Abelardo</span><b>${bx.a}%</b></div><div class="row dcap ${bx.w==='C'?'win-c':'win-a'}"><span>${bx.w==='C'?'Va Cepeda':'Va Abelardo'}</span><b>+${Math.abs(m26).toFixed(0)}%</b></div><div class="row dcap ${dc}"><span>vs Petro 2022</span><b>${bx.d>0?'+':''}${bx.d}%</b></div><div class="pfoot"><button class="img-btn" onclick="downloadPanelImg()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Descargar imagen</button></div></div>`;})()}<div class="custom"><div class="cu-title">Personaliza tu volante</div><label class="cu-lab">Nombre del barrio</label><input id="cuName" class="cu-input" type="text" value="${name}"><label class="cu-lab">Propuesta 1</label><select id="cuSel0" class="cu-sel"></select><label class="cu-lab">Propuesta 2</label><select id="cuSel1" class="cu-sel"></select><label class="cu-lab">Propuesta 3</label><select id="cuSel2" class="cu-sel"></select></div><button class="dl-btn" id="dl">Descarga Volante en PDF</button><div class="dl-note">Se abre el diálogo de impresión — elige "Guardar como PDF" (hoja carta).</div>${pin}<button class="dl-btn dl-pin" id="dlpin">Descargar Pin PNG</button></div></div>`;
+ const pin=`<svg class="pin" viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg"><defs><path id="aT" d="M 24,150 A 116,116 0 0 1 256,150"/><path id="aB" d="M 31,146 A 109,109 0 0 0 249,146"/><clipPath id="cf"><circle cx="140" cy="140" r="127"/></clipPath></defs><circle cx="140" cy="140" r="138" fill="var(--tinta)"/><circle cx="140" cy="140" r="131" fill="none" stroke="var(--acento)" stroke-width="3"/><image href="images/imgboton.png" x="20" y="36" width="240" height="240" clip-path="url(#cf)" preserveAspectRatio="xMidYMid meet"/><text class="pin-t" style="font-size:${fs}px"><textPath href="#aT" startOffset="50%" text-anchor="middle">${arco}</textPath></text><text class="pin-c"><textPath href="#aB" startOffset="50%" text-anchor="middle">CEPEDA</textPath></text></svg>`;
+ P.innerHTML=`<div class="pv-grid"><div class="vol-fit"><div class="volante"><div class="v-cab"><div class="v-cabtxt"><div class="v-kicker">EL PODER DE LA VERDAD</div><div class="v-barrio">${name.toUpperCase()} CON</div><div class="v-cepeda">CEPEDA</div></div><img class="v-foto" src="images/ivnaaida.webp" alt=""></div><div class="v-body">${logro}${puntos}<div class="v-fuente">Propuestas tomadas de la Caja de herramientas oficial · presidenteivancepeda.com/cajadeherramientas</div></div><div class="v-pie"><div class="v-lema">En segunda vuelta, vota Cepeda.</div><div class="v-ph"><div class="ph-word"><span class="o">P</span><span class="b">A</span><span class="r">C</span><span class="g">T</span><span class="p">O</span></div><div class="ph-sub">HISTÓRICO</div></div></div><div class="v-barra"><span></span><span></span><span></span></div></div></div><div class="lado">${(()=>{const bx=cur;if(!bx)return'';const m26=bx.c-bx.a;const[dc]=est(bx.d);return `<div class="bpanel"><div class="bn">${bx.b}</div><div class="bl">${bx.loc} · UPZ ${bx.upz} · ${bx.uso}</div><div class="row"><span>Estrato</span><b>${bx.estrato}</b></div><div class="row big"><span>Cepeda</span><b>${bx.c}%</b></div><div class="row big"><span>Abelardo</span><b>${bx.a}%</b></div><div class="row dcap ${bx.w==='C'?'win-c':'win-a'}"><span>${bx.w==='C'?'Va Cepeda':'Va Abelardo'}</span><b>+${Math.abs(m26).toFixed(0)}%</b></div><div class="row dcap ${dc}"><span>vs Petro 2022</span><b>${bx.d>0?'+':''}${bx.d}%</b></div><div class="pfoot"><button class="img-btn" onclick="downloadPanelImg()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Descargar imagen</button></div></div>`;})()}<div class="custom"><div class="cu-title">Personaliza tu volante</div><label class="cu-lab">Nombre del barrio</label><input id="cuName" class="cu-input" type="text" value="${name}"><label class="cu-lab">Propuesta 1</label><select id="cuSel0" class="cu-sel"></select><label class="cu-lab">Propuesta 2</label><select id="cuSel1" class="cu-sel"></select><label class="cu-lab">Propuesta 3</label><select id="cuSel2" class="cu-sel"></select></div><button class="dl-btn" id="dl">Descarga Volante en PDF</button><div class="dl-note">Se abre el diálogo de impresión — elige "Guardar como PDF" (hoja carta).</div>${pin}<button class="dl-btn dl-pin" id="dlstick">Stickers y pines en PDF</button></div></div>`;
  fitVolante();
  document.getElementById('dl').onclick=()=>window.print();
- const bp=document.getElementById('dlpin'); if(bp) bp.onclick=descargarPin;
+ const bs=document.getElementById('dlstick'); if(bs) bs.onclick=descargarStickers;
  const opts=Object.keys(RELEV).filter(id=>FICHAS[id]).sort((a,b)=>FICHAS[a].titulo.localeCompare(FICHAS[b].titulo));
  [0,1,2].forEach(i=>{const el=document.getElementById('cuSel'+i);if(!el)return;
   el.innerHTML=opts.map(id=>'<option value="'+id+'"'+(id===ids[i]?' selected':'')+'>'+FICHAS[id].titulo+'</option>').join('');
@@ -461,15 +461,52 @@ function fitVolante(){
 }
 window.addEventListener('resize',()=>fitVolante());
 function toDataURL(u){return fetch(u).then(r=>{if(!r.ok)throw 0;return r.blob();}).then(b=>new Promise(res=>{const fr=new FileReader();fr.onload=()=>res(fr.result);fr.readAsDataURL(b);}));}
+// Hoja de stickers carta: bumper vertical a la izquierda + 3 pines a la derecha
+async function descargarStickers(){
+ if(!cur)return;
+ const name=(custom.name||cur.b);
+ const arco=(name.toUpperCase()+' CON');
+ const fs=arco.length>24?12.5:arco.length>17?14.5:17;
+ if(!window.__pinFoto){try{window.__pinFoto=await toDataURL('images/imgboton.png');}catch(e){window.__pinFoto='';}}
+ if(window.__pinFont===undefined){try{window.__pinFont=await toDataURL('https://www.presidenteivancepeda.com/_next/static/media/Boldfinger-s.p.11htjmau7w4ly.ttf');}catch(e){window.__pinFont=null;}}
+ const ff=window.__pinFont?`@font-face{font-family:'boldfinger';src:url(${window.__pinFont}) format('truetype');}`:'';
+ // un pin como <svg> anidado reutilizable (viewBox 280, igual al del sidebar)
+ const pinSvg=(x,y,d,i)=>`<svg x="${x}" y="${y}" width="${d}" height="${d}" viewBox="0 0 280 280">
+  <defs><path id="aT${i}" d="M 24,150 A 116,116 0 0 1 256,150"/><path id="aB${i}" d="M 31,146 A 109,109 0 0 0 249,146"/><clipPath id="cf${i}"><circle cx="140" cy="140" r="127"/></clipPath></defs>
+  <circle cx="140" cy="140" r="138" fill="#544595"/><circle cx="140" cy="140" r="131" fill="none" stroke="#f3930d" stroke-width="3"/>
+  <image href="${window.__pinFoto}" x="20" y="36" width="240" height="240" clip-path="url(#cf${i})" preserveAspectRatio="xMidYMid meet"/>
+  <text style="font-family:'boldfinger',Arial,sans-serif;font-size:${fs}px;fill:#fff;letter-spacing:1.5px"><textPath href="#aT${i}" startOffset="50%" text-anchor="middle">${arco}</textPath></text>
+  <text style="font-family:'boldfinger',Arial,sans-serif;font-size:41px;fill:#fff;letter-spacing:3.5px"><textPath href="#aB${i}" startOffset="50%" text-anchor="middle">CEPEDA</textPath></text></svg>`;
+ // bumper horizontal 259x54mm dibujado y rotado -90 para quedar vertical a la izquierda
+ const bumper=`<g transform="translate(10,269) rotate(-90)">
+  <rect x="0" y="0" width="259" height="66" rx="6" fill="#544595"/>
+  <rect x="1.8" y="1.8" width="255.4" height="62.4" rx="4.8" fill="none" stroke="#f3930d" stroke-width="1.4"/>
+  <circle cx="33" cy="33" r="25" fill="#fff"/>
+  <image href="${window.__pinFoto}" x="9" y="9" width="48" height="48" preserveAspectRatio="xMidYMid meet"/>
+  <text x="158" y="16" text-anchor="middle" style="font-family:'boldfinger',Arial,sans-serif;font-size:12px;fill:#fff;letter-spacing:1px">${arco}</text>
+  <text x="158" y="43" text-anchor="middle" style="font-family:'boldfinger',Arial,sans-serif;font-size:19px;fill:#fff;letter-spacing:1.5px">CEPEDA + QUILCU\u00c9</text>
+  <text x="158" y="58" text-anchor="middle" style="font-family:Arial,sans-serif;font-size:4.6px;font-weight:700;fill:#fff;letter-spacing:.5px">EN SEGUNDA VUELTA, VOTA CEPEDA \u00b7 EL PODER DE LA VERDAD</text></g>`;
+ // 3 pines de 80mm a la derecha
+ const px=216-10-80, d=80;
+ const pins=[10,99.5,189].map((y,i)=>pinSvg(px,y,d,i)).join('');
+ const sheet=`<svg xmlns="http://www.w3.org/2000/svg" width="216mm" height="279mm" viewBox="0 0 216 279">${bumper}${pins}</svg>`;
+ const w=window.open('','_blank');
+ if(!w){alert('Permite las ventanas emergentes para generar el PDF.');return;}
+ w.document.write(`<!DOCTYPE html><html><head><meta charset="utf-8"><title>Stickers \u2014 ${name}</title>
+  <style>${ff}@page{size:letter;margin:0}html,body{margin:0;padding:0}svg{display:block}</style></head>
+  <body>${sheet}<script>onload=()=>setTimeout(()=>print(),400)<\/script></body></html>`);
+ w.document.close();
+}
+
 async function descargarPin(){
  const svgEl=document.querySelector('.pin'); if(!svgEl||!cur) return;
  const nota=document.querySelector('.dl-note');
  try{
-  if(!window.__pinFoto) window.__pinFoto=await toDataURL('images/ivnaaida.webp');
+  if(!window.__pinFoto) window.__pinFoto=await toDataURL('images/imgboton.png');
   if(window.__pinFont===undefined){try{window.__pinFont=await toDataURL('https://www.presidenteivancepeda.com/_next/static/media/Boldfinger-s.p.11htjmau7w4ly.ttf');}catch(e){window.__pinFont=null;}}
-  let src=svgEl.outerHTML.replace('images/ivnaaida.webp',window.__pinFoto);
+  let src=svgEl.outerHTML.replace('images/imgboton.png',window.__pinFoto);
   const ff=window.__pinFont?`@font-face{font-family:'boldfinger';src:url(${window.__pinFont}) format('truetype');}`:'';
-  const style=`<style>${ff} text{font-family:'boldfinger',Arial,sans-serif;} .pin-t{fill:#ffffff;letter-spacing:1.5px;} .pin-c{font-size:36px;fill:#f3930d;letter-spacing:3px;}</style>`;
+  const style=`<style>${ff} text{font-family:'boldfinger',Arial,sans-serif;} .pin-t{fill:#ffffff;letter-spacing:1.5px;} .pin-c{font-size:41px;fill:#ffffff;letter-spacing:3.5px;}</style>`;
   src=src.replace('<defs>',style+'<defs>');
   src=src.replace(/var\(--tinta\)/g,'#544595').replace(/var\(--acento\)/g,'#f3930d');
   const url=URL.createObjectURL(new Blob([src],{type:'image/svg+xml'}));
