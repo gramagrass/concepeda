@@ -131,6 +131,40 @@ def is_divulgacion(path):
     return len(ln) == 38 and ln.isdigit()
 
 
+def is_escrutinio(path):
+    with open(path, encoding="latin-1") as f:
+        ln = f.readline().rstrip("\r\n")
+    return ln.startswith("9999;") and ln.count(";") >= 11
+
+
+def load_escrutinio(path):
+    """Escrutinio definitivo (ESCRUTINIOS_MMV_*.csv): CSV con ';' sin encabezados.
+    Campos: corte;dep;mun;zona(3);puesto(2);mesa(6);cir;?;?;cand(4);orden(3);votos
+    Códigos 2026 (validados contra el escrutinio oficial):
+      Cepeda=('0026','001')  De la Espriella=('1003','004')
+      blanco=('0000','996')  nulos=('0000','997')  no marcados=('0000','998')
+    """
+    CEP, ADLE = ("0026", "001"), ("1003", "004")
+    NUL, NM = ("0000", "997"), ("0000", "998")
+    cep, adle, valid = defaultdict(int), defaultdict(int), defaultdict(int)
+    with open(path, encoding="latin-1") as f:
+        for ln in f:
+            p = ln.rstrip("\r\n;").split(";")
+            if len(p) < 12 or p[1] != DEP_BOGOTA:
+                continue
+            cand = (p[9], p[10])
+            if cand in (NUL, NM):
+                continue  # válidos = candidatos + en blanco
+            key = (p[3][-2:], p[4])  # zona a 2 dígitos para casar con IDECA
+            v = int(p[11])
+            valid[key] += v
+            if cand == CEP:
+                cep[key] += v
+            elif cand == ADLE:
+                adle[key] += v
+    return cep, adle, valid
+
+
 def load_puestos(path):
     """Puntos IDECA: código DIVIPOLE 16001+ZZ+PP → (geom, zona, localidad)."""
     out = {}
@@ -228,7 +262,9 @@ def main():
 
     # ---------- MODO DATOS REALES 2026 ----------
     if args.mmv2026:
-        if is_divulgacion(args.mmv2026):
+        if is_escrutinio(args.mmv2026):
+            cep26, adle26, valid26 = load_escrutinio(args.mmv2026)
+        elif is_divulgacion(args.mmv2026):
             cep26, adle26, valid26 = load_divulgacion(args.mmv2026)
         else:
             cep26, adle26, valid26 = load_mmv(args.mmv2026, left=("CEPEDA",), right=("ESPRIELLA",))
