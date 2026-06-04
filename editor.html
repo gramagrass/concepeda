@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Editor de contenido — Bogotá con Cepeda</title>
+<style>
+:root{--tinta:#0f2a43;--acento:#e4572e;--ambar:#f3a712;--bg:#f4f1ea;--txt:#1c2733;--ok:#3f9a73}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Helvetica,Arial,sans-serif;background:var(--bg);color:var(--txt);font-size:15px;line-height:1.45}
+header{position:sticky;top:0;z-index:10;background:var(--tinta);color:#fff;padding:10px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+header h1{font-size:16px;font-weight:700;margin-right:auto}
+.tabs{display:flex;gap:6px}
+.tab{background:rgba(255,255,255,.12);color:#fff;border:0;padding:7px 14px;border-radius:6px;cursor:pointer;font-size:14px}
+.tab.on{background:var(--acento);font-weight:700}
+button.act{background:var(--ambar);color:var(--tinta);border:0;padding:7px 14px;border-radius:6px;cursor:pointer;font-weight:700;font-size:14px}
+button.act:disabled{opacity:.45;cursor:default}
+.bar{padding:10px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:#fff;border-bottom:1px solid #ddd;position:sticky;top:48px;z-index:9}
+.bar input[type=search]{flex:1;min-width:200px;padding:8px 10px;border:1px solid #ccc;border-radius:6px;font-size:15px}
+.bar .stat{font-size:13px;color:#666}
+.bar .dirty{color:var(--acento);font-weight:700}
+main{max-width:880px;margin:0 auto;padding:14px 16px 80px}
+.card{background:#fff;border:1px solid #ddd;border-radius:8px;margin-bottom:10px;overflow:hidden}
+.card.edited{border-left:4px solid var(--acento)}
+.head{padding:10px 14px;display:flex;gap:10px;align-items:baseline;background:#f8f5ee}
+.head .sec{font-size:12px;color:#888;text-transform:uppercase;letter-spacing:.04em;white-space:nowrap}
+.head .tit{font-weight:700;color:var(--tinta)}
+.head .mark{margin-left:auto;color:var(--acento);font-size:12px;font-weight:700;white-space:nowrap}
+.body{display:none;padding:4px 14px 14px;border-top:1px solid #eee}
+.card.open .body{display:block}
+.fld{margin-top:10px}
+.fld label{display:block;font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
+textarea{width:100%;border:1px solid #ccc;border-radius:6px;padding:8px 10px;font:inherit;resize:none;overflow:hidden;background:#fffdf8}
+textarea:focus{outline:2px solid var(--ambar);border-color:transparent}
+.warn{margin-top:4px;font-size:12.5px;color:#a32414;background:#fdeeea;border-radius:5px;padding:5px 8px;display:none}
+.warn.show{display:block}
+.lista .fld{margin-top:6px}
+footer{position:fixed;bottom:0;left:0;right:0;background:var(--tinta);color:#fff;padding:8px 16px;font-size:13px;display:none;justify-content:space-between;align-items:center}
+footer.show{display:flex}
+.hint{font-size:12.5px;color:#777;margin:6px 0 14px}
+</style>
+</head>
+<body>
+<header>
+  <h1>Editor de contenido</h1>
+  <div class="tabs">
+    <button class="tab on" data-t="fichas">Propuestas (fichas)</button>
+    <button class="tab" data-t="logros">Logros</button>
+  </div>
+  <button class="act" id="save">Guardar</button>
+</header>
+<div class="bar">
+  <input type="search" id="q" placeholder="Buscar texto en propuestas o logros…">
+  <span class="stat" id="stat"></span>
+</div>
+<main>
+  <p class="hint">Todos los registros están abiertos y editables: corrige directo sobre el texto y presiona <b>Guardar</b> (descarga el .json corregido — o guarda directo sobre el archivo si lo abriste en Chrome local). Luego súbelo a GitHub para publicar. Los cambios se marcan en naranja. Reglas editoriales activas: nunca «el programa de» Abelardo/De la Espriella; los contrastes nombran a De la Espriella al inicio e incluyen la contrapropuesta «Cepeda…».</p>
+  <div id="list"></div>
+</main>
+<footer id="foot"><span id="footMsg"></span><button class="act" id="save2">Guardar cambios</button></footer>
+<script>
+'use strict';
+const FILES={fichas:'fichas.json',logros:'logros.json'};
+let DATA={fichas:null,logros:null};
+let HANDLE={fichas:null,logros:null};   // File System Access (opcional)
+let DIRTY={fichas:new Set(),logros:new Set()};
+let TAB='fichas';
+
+// — campos editables por tipo —
+const CAMPOS={
+  fichas:['hook','titulo','para_ti','propuestas','cierre','contraste'],
+  logros:['titular','dato']
+};
+// DATA.fichas = {_meta, fichas:[…]} y DATA.logros = {_meta, logros:[…]} → la lista interna:
+const ITEMS=()=>TAB==='fichas'?DATA.fichas.fichas:DATA.logros.logros;
+
+// — reglas editoriales —
+function problemas(campo,txt){
+  const p=[];
+  if(/(?:el|su|en el)\s+programa\s+de\s+(?:abelardo|de la espriella)/i.test(txt))
+    p.push('Regla: nunca «el programa de» Abelardo/De la Espriella.');
+  if(campo==='contraste'&&txt.trim()&&!/De la Espriella/.test(txt.slice(0,80)))
+    p.push('El contraste debe nombrar a De la Espriella al inicio (sin etiqueta «vs»).');
+  if(campo==='contraste'&&txt.trim()&&!/(?:Para )?Cepeda[ ,]/.test(txt))
+    p.push('Falta la contrapropuesta: una frase que arranque con «Cepeda…» (va en negrita en el volante).');
+  return p;
+}
+
+async function cargar(){
+  if(location.protocol!=='file:'){
+    for(const k of Object.keys(FILES)){
+      try{
+        const r=await fetch(FILES[k]+'?v='+Date.now());
+        if(!r.ok)throw 0;
+        DATA[k]=await r.json();
+      }catch(e){DATA[k]=null;}
+    }
+  }
+  if(!DATA.fichas||!DATA.logros){pantallaAbrir();return;}
+  render();
+}
+
+function pantallaAbrir(){
+  const fsapi='showOpenFilePicker' in window;
+  document.getElementById('list').innerHTML=
+    '<div style="background:#fff;border:1px solid #ddd;border-radius:8px;padding:24px;text-align:center">'+
+    '<p style="margin-bottom:6px;font-weight:700;color:var(--tinta)">Selecciona <code>fichas.json</code> y <code>logros.json</code> (los dos a la vez, están en esta misma carpeta)</p>'+
+    '<p class="hint" style="margin-bottom:14px">El navegador no deja leer archivos locales automáticamente — solo es esta vez al abrir.'+
+    (fsapi?' Al guardar, los cambios se escriben directo sobre los archivos.':' Al guardar, se descargan los .json corregidos (reemplaza los de la carpeta).')+'</p>'+
+    (fsapi?'<button class="act" id="pick" style="font-size:16px;padding:10px 22px">Seleccionar archivos…</button>'
+          :'<input type="file" id="pickInput" multiple accept=".json" style="font-size:15px">')+
+    '</div>';
+  if(fsapi)document.getElementById('pick').onclick=abrirLocal;
+  else document.getElementById('pickInput').addEventListener('change',e=>abrirInput(e.target.files));
+}
+
+async function abrirLocal(){
+  try{
+    const handles=await window.showOpenFilePicker({multiple:true,types:[{description:'JSON',accept:{'application/json':['.json']}}]});
+    for(const h of handles){
+      const f=await h.getFile();const j=JSON.parse(await f.text());
+      if(j.fichas){DATA.fichas=j;HANDLE.fichas=h;}
+      else if(j.logros){DATA.logros=j;HANDLE.logros=h;}
+    }
+    listo();
+  }catch(e){}
+}
+
+async function abrirInput(files){
+  for(const f of files){
+    try{
+      const j=JSON.parse(await f.text());
+      if(j.fichas)DATA.fichas=j; else if(j.logros)DATA.logros=j;
+    }catch(e){}
+  }
+  listo();
+}
+
+function listo(){
+  if(DATA.fichas&&DATA.logros)render();
+  else{
+    pantallaAbrir();
+    const falta=[!DATA.fichas&&'fichas.json',!DATA.logros&&'logros.json'].filter(Boolean).join(' y ');
+    document.getElementById('list').insertAdjacentHTML('afterbegin',
+      `<p class="hint" style="color:#a32414;font-weight:700">Falta seleccionar: ${falta}</p>`);
+  }
+}
+
+function esc(s){return (s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+
+function render(){
+  const q=document.getElementById('q').value.trim().toLowerCase();
+  const items=ITEMS();
+  const list=document.getElementById('list');
+  list.innerHTML='';
+  let shown=0;
+  items.forEach((it,idx)=>{
+    const texto=JSON.stringify(it).toLowerCase();
+    if(q&&!texto.includes(q))return;
+    shown++;
+    const card=document.createElement('div');
+    card.className='card'+(DIRTY[TAB].has(idx)?' edited':'');
+    card.dataset.idx=idx;
+    const tit=TAB==='fichas'?it.titulo:it.titular;
+    card.classList.add('open');
+    card.innerHTML=`<div class="head"><span class="sec">${esc(it.sector||'')}</span><span class="tit">${esc(tit)}</span>${DIRTY[TAB].has(idx)?'<span class="mark">● editado</span>':''}</div><div class="body"></div>`;
+    list.appendChild(card);
+    campos(card,it,idx); // después de insertar en el DOM, para que el auto-alto funcione
+  });
+  // medir alturas SOLO cuando ya está todo en el DOM (antes miden 0)
+  list.querySelectorAll('textarea').forEach(ajustar);
+  actualizar(shown,items.length);
+}
+
+function campos(card,it,idx){
+  const body=card.querySelector('.body');
+  CAMPOS[TAB].forEach(c=>{
+    if(!(c in it))return;
+    const v=it[c];
+    if(Array.isArray(v)){
+      const wrap=document.createElement('div');wrap.className='fld lista';
+      wrap.innerHTML=`<label>${c} (${v.length})</label>`;
+      v.forEach((s,i)=>wrap.appendChild(ta(idx,c,s,i)));
+      body.appendChild(wrap);
+    }else{
+      const wrap=document.createElement('div');wrap.className='fld';
+      wrap.innerHTML=`<label>${c}</label>`;
+      wrap.appendChild(ta(idx,c,v,null));
+      body.appendChild(wrap);
+    }
+  });
+}
+
+function ta(idx,campo,valor,sub){
+  const cont=document.createElement('div');
+  const t=document.createElement('textarea');
+  t.value=valor;ajustar(t);
+  const w=document.createElement('div');w.className='warn';
+  t.addEventListener('input',()=>{
+    ajustar(t);
+    const it=ITEMS()[idx];
+    if(sub===null)it[campo]=t.value;else it[campo][sub]=t.value;
+    DIRTY[TAB].add(idx);
+    const card=t.closest('.card');card.classList.add('edited');
+    if(!card.querySelector('.mark')){const m=document.createElement('span');m.className='mark';m.textContent='● editado';card.querySelector('.head').appendChild(m);}
+    const p=problemas(campo,t.value);
+    w.innerHTML=p.join('<br>');w.classList.toggle('show',p.length>0);
+    actualizar();
+  });
+  const p=problemas(campo,valor);
+  if(p.length){w.innerHTML=p.join('<br>');w.classList.add('show');}
+  cont.appendChild(t);cont.appendChild(w);
+  return cont;
+}
+function ajustar(t){t.style.height='auto';t.style.height=Math.max(t.scrollHeight+2,40)+'px';}
+
+function actualizar(shown,total){
+  const n=DIRTY.fichas.size+DIRTY.logros.size;
+  const s=document.getElementById('stat');
+  s.innerHTML=(shown!=null?`${shown}/${total} visibles · `:'')+(n?`<span class="dirty">${n} con cambios sin guardar</span>`:'sin cambios');
+  const f=document.getElementById('foot');
+  f.classList.toggle('show',n>0);
+  document.getElementById('footMsg').textContent=n?`${n} elemento(s) editado(s) — recuerda guardar y subir a GitHub`:'';
+}
+
+async function guardar(){
+  let directo=true;
+  for(const k of Object.keys(FILES)){
+    if(!DIRTY[k].size)continue;
+    const json=JSON.stringify(DATA[k],null,2);
+    if(HANDLE[k]){                                   // archivo abierto en Chrome local
+      const w=await HANDLE[k].createWritable();await w.write(json);await w.close();
+    }else if(location.protocol.startsWith('http')){  // servidor local con PUT (servidor.command)
+      try{
+        const r=await fetch(FILES[k],{method:'PUT',body:json});
+        if(!r.ok)throw 0;
+      }catch(e){descargar(json,FILES[k]);directo=false;}
+    }else{descargar(json,FILES[k]);directo=false;}
+    DIRTY[k].clear();
+  }
+  render();
+  const s=document.getElementById('stat');
+  s.innerHTML=directo
+    ?'<span style="color:var(--ok);font-weight:700">✓ Guardado — recarga el generador para ver los volantes actualizados</span>'
+    :'<span class="dirty">Descargados los .json corregidos — reemplaza los de la carpeta o súbelos a GitHub</span>';
+}
+function descargar(json,nombre){
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([json],{type:'application/json'}));
+  a.download=nombre;a.click();URL.revokeObjectURL(a.href);
+}
+
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');TAB=b.dataset.t;render();
+});
+document.getElementById('q').addEventListener('input',render);
+document.getElementById('save').onclick=guardar;
+document.getElementById('save2').onclick=guardar;
+window.addEventListener('beforeunload',e=>{if(DIRTY.fichas.size+DIRTY.logros.size){e.preventDefault();e.returnValue='';}});
+cargar();
+</script>
+</body>
+</html>

@@ -16,7 +16,9 @@ Herramienta hiperlocal de campaña: mapa de Bogotá barrio por barrio (1.177 bar
 
 ## Cómo actualizar contenido
 
-Editar `fichas.json` o `logros.json` directamente en GitHub (botón ✏️) y hacer commit: el sitio los lee en vivo, así que el cambio queda publicado al instante en GitHub Pages. (`index.html` lleva además una copia embebida de respaldo: regenerarla solo es necesario si se quiere que funcione offline con el contenido nuevo.)
+**Editor visual:** abrir `editor.html` (en GitHub Pages: `…/editor.html`). Lista las 96 propuestas y los 34 logros, con buscador; clic en una tarjeta para editar los textos, y **Guardar** descarga el .json corregido — subirlo a GitHub y queda publicado. Valida en vivo las reglas editoriales (nunca «el programa de» Abelardo; contrastes nombran a De la Espriella al inicio e incluyen la contrapropuesta «Cepeda…»).
+
+Alternativa: editar `fichas.json` o `logros.json` directamente en GitHub (botón ✏️) y hacer commit: el sitio los lee en vivo, así que el cambio queda publicado al instante en GitHub Pages. (`index.html` lleva además una copia embebida de respaldo: regenerarla solo es necesario si se quiere que funcione offline con el contenido nuevo.)
 
 ## Datos pendientes
 
