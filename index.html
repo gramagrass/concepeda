@@ -33,20 +33,26 @@
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.js"></script>
 <style>
   @font-face{font-family:'boldfinger';src:url('https://www.presidenteivancepeda.com/_next/static/media/Boldfinger-s.p.11htjmau7w4ly.ttf') format('truetype');font-weight:400 900;font-display:swap;}
+  @font-face{font-family:'SharpSansDisp';src:url('fonts/SharpSansDispNo1-Bold.woff2') format('woff2'),url('fonts/SharpSansDispNo1-Bold.woff') format('woff');font-weight:700;font-display:swap;}
   :root{--tinta:#544595;--acento:#f3930d;--acento2:#f7a83a;--purpura:#874088;--bg:#f5f3ed;--card:#fff;--texto:#1d1b28;--muted:#6b6862;--linea:#e0ddd4;}
   *{box-sizing:border-box;margin:0;padding:0;}
   body{font-family:"Nunito Sans","Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--texto);line-height:1.5;}
   .wrap{max-width:1080px;margin:0 auto;padding:0 20px 60px;}
-  header.top{background:var(--tinta);color:#fff;padding:30px 0 26px;position:relative;overflow:hidden;}
-  .top-foto{position:absolute;right:0;bottom:0;height:100%;max-width:42%;object-fit:contain;object-position:right bottom;}
+  .band-dark{background:#e63329;}
+  .band-dark .wrap{padding:14px 20px 12px;}
+  .band-orange{background:#d99204;}
+  .band-orange .wrap{padding:20px 20px 24px;}
+  header.top{background:var(--tinta);color:#fff;padding:30px 0 0;position:relative;overflow:hidden;}
+  .top-foto{display:block;height:300px;width:auto;flex:0 0 auto;align-self:flex-end;}
   header.top .wrap{position:relative;z-index:2;}
-  header.top .wrap{display:flex;flex-direction:column;gap:5px;}
+  header.top .wrap{display:flex;align-items:flex-end;gap:34px;padding:0 20px;}
+  .head-txt{display:flex;flex-direction:column;gap:5px;padding-bottom:26px;}
   .brand{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--acento2);font-weight:700;}
-  h1{font-family:'boldfinger',"Nunito Sans",Arial,sans-serif;font-size:73px;font-weight:700;letter-spacing:1px;line-height:1;}
+  h1{font-family:'boldfinger',"Nunito Sans",Arial,sans-serif;font-size:73px;font-weight:700;letter-spacing:1px;line-height:1;color:#fff;}
   .sub{font-size:14px;opacity:.85;max-width:600px;}
   .src{font-size:11px;margin-top:6px;opacity:.7;}
   .lockups{display:flex;gap:34px;margin-top:16px;align-items:flex-end;}
-  .hashtag{font-family:'boldfinger',"Nunito Sans",Arial,sans-serif;font-size:26px;color:var(--acento2,#ffc05c);text-decoration:none;letter-spacing:.5px;align-self:flex-end;line-height:1;}
+  .hashtag{font-family:'boldfinger',"Nunito Sans",Arial,sans-serif;font-size:26px;color:var(--acento2,#ffc05c);text-decoration:none;letter-spacing:.5px;line-height:1;margin-top:14px;align-self:flex-start;}
   .hashtag:hover{color:#fff;}
   .lockup{font-size:22px;display:inline-flex;flex-direction:column;align-items:center;line-height:1;text-decoration:none;color:#fff;}
   .lockup{transition:color .15s;}
@@ -55,23 +61,23 @@
   .lk-big{font-family:'boldfinger',Arial,sans-serif;text-transform:uppercase;font-size:1.6em;line-height:.85;letter-spacing:-.02em;}
   .lk-small{font-family:'boldfinger',Arial,sans-serif;text-transform:uppercase;line-height:.9;letter-spacing:.02em;margin-top:-.05em;}
   .banner{background:#fff7e6;border:1px solid var(--acento2);color:#7a5500;font-size:12px;padding:8px 12px;border-radius:8px;margin:16px 0 0;}
-  .maphead{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:10px;margin-top:18px;}
-  .maptitle{font-family:'boldfinger',"Nunito Sans",Arial,sans-serif;font-size:24px;font-weight:700;color:var(--tinta);letter-spacing:.4px;}
-  .maptitle small{display:block;font-weight:400;font-size:12px;color:var(--muted);max-width:560px;}
+  .maphead{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:10px;margin-top:0;}
+  .maptitle{font-family:'boldfinger',"Nunito Sans",Arial,sans-serif;font-size:24px;font-weight:700;color:#fff;letter-spacing:.4px;}
+  .maptitle small{display:block;font-weight:400;font-size:12px;color:rgba(255,255,255,.65);max-width:560px;}
   .modes{display:flex;gap:6px;}
   .mode{font-size:12.5px;padding:7px 14px;border:none;border-radius:18px;cursor:pointer;font-weight:700;color:#fff;opacity:.45;}
   .mode[data-m="win"]{background:var(--tinta);}
   .mode[data-m="delta"]{background:#d99204;}
   .mode.on{opacity:1;}
-  .mapbox{position:relative;background:var(--card);border:1px solid var(--linea);border-radius:12px;padding:6px;margin-top:10px;overflow:hidden;}
+  .mapbox{position:relative;border-radius:10px;margin-top:0;overflow:hidden;}
   #map{width:100%;height:640px;border-radius:8px;}
   .barrio{stroke:#fff;stroke-width:.18;cursor:pointer;}
   .barrio:hover{stroke:var(--tinta);stroke-width:1.1;}
   .barrio.sel{stroke:var(--tinta);stroke-width:1.6;}
   .locline{fill:none;stroke:#33414d;stroke-width:.9;stroke-opacity:.55;pointer-events:none;}
   .loclabel{font-size:10px;fill:#22303c;pointer-events:none;text-anchor:middle;font-weight:700;paint-order:stroke;stroke:#fff;stroke-width:2.4px;stroke-linejoin:round;}
-  .legend{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);flex-wrap:wrap;margin-top:8px;}
-  .legend .bar{display:flex;height:11px;border-radius:3px;overflow:hidden;width:180px;border:1px solid var(--linea);}
+  .legend{display:flex;align-items:center;gap:6px;font-size:11px;color:#4a2b03;font-weight:600;flex-wrap:wrap;margin-top:10px;}
+  .legend .bar{display:flex;height:11px;border-radius:3px;overflow:hidden;width:180px;border:1px solid rgba(0,0,0,.25);}
   .legend .bar span{flex:1;}
   .tip{position:fixed;pointer-events:none;background:var(--tinta);color:#fff;padding:10px 13px;border-radius:10px;font-size:12.5px;max-width:250px;box-shadow:0 6px 20px rgba(0,0,0,.28);opacity:0;transition:opacity .08s;z-index:30;line-height:1.45;}
   .tip .bn{font-weight:800;font-size:14px;margin-bottom:2px;}
@@ -176,7 +182,10 @@
   .vol-fit{width:100%;max-width:720px;}
   @media(max-width:768px){
     h1{font-size:48px;}
-    .top-foto{opacity:.22;}
+    header.top{padding-bottom:26px;}
+    header.top .wrap{display:block;}
+    .top-foto{position:absolute;left:0;bottom:0;height:100%;opacity:.22;}
+    .head-txt{padding-bottom:0;}
     .lockups{gap:22px;}
     .lockup{font-size:17px;}
     #map{height:62vh;}
@@ -190,7 +199,7 @@
   @media print{
     @page{size:215.9mm 279.4mm;margin:0;}
     body{background:#fff;}
-    header.top,.banner,.maphead,.mapbox,.legend,.controls,.chips,.estado,.dl-btn,.dl-note,.lado,.src,.webfoot,#tip{display:none !important;}
+    header.top,.banner,.band-dark,.band-orange,.maphead,.mapbox,.legend,.controls,.chips,.estado,.dl-btn,.dl-note,.lado,.src,.webfoot,#tip{display:none !important;}
     .pv-grid{display:block;margin:0;}
     .wrap{padding:0;max-width:none;}
     #preview{margin:0;}
@@ -227,19 +236,21 @@
 </style>
 </head>
 <body>
-<header class="top"><img class="top-foto" src="images/ivnaaida.webp" alt=""><div class="wrap">
+<header class="top"><div class="wrap">
+  <img class="top-foto" src="images/fotoIvanAida.avif" alt="">
+  <div class="head-txt">
   <div class="brand">El poder de la verdad · Segunda vuelta</div>
-  <h1><span style="color:#F3930D">BOGOTÁ</span> CON CEPEDA</h1>
+  <h1><span style="color:#E63329">¡</span>VUELA&nbsp;CEPEDA<span style="color:#E63329">!</span> <span style="color:#F3930D">BOGOTÁ</span></h1>
   <div class="sub"><b>Encuentra tu barrio en el mapa, descarga tu volante, imprímelo y reparte.</b></div>
   <div class="lockups">
     <a class="lockup" href="https://www.presidenteivancepeda.com/" aria-label="Presidente Iván Cepeda"><span class="lk-label" style="font-size:.55em">Presidente</span><span class="lk-big">Iván</span><span class="lk-small" style="font-size:.95em">Cepeda</span></a>
     <a class="lockup" href="https://www.presidenteivancepeda.com/quien-es-aida" aria-label="Vicepresidenta Aida Quilcué"><span class="lk-label" style="font-size:.5em">Vicepresidenta</span><span class="lk-big">Aida</span><span class="lk-small" style="font-size:.85em">Quilcué</span></a>
-    <a class="hashtag" href="https://x.com/hashtag/MeLaJuegoPorLaVida" target="_blank" rel="noopener">#MeLaJuegoPorLaVida</a>
+  </div>
+  <a class="hashtag" href="https://x.com/hashtag/MeLaJuegoPorLaVida" target="_blank" rel="noopener">#MeLaJuegoPorLaVida</a>
   </div>
 </div></header>
 
-<div class="wrap">
-
+<div class="band-dark"><div class="wrap">
   <div class="maphead">
     <div class="maptitle">CÓMO VAMOS, BARRIO POR BARRIO</div>
     <div class="modes">
@@ -247,6 +258,9 @@
       <span class="mode" data-m="delta">Retroceso vs 2022</span>
     </div>
   </div>
+</div></div>
+
+<div class="band-orange"><div class="wrap">
   <div class="mapbox"><div id="map"></div></div>
   <div class="legend" id="legend"></div>
 
@@ -255,6 +269,9 @@
     <label class="toggle"><input type="checkbox" id="tc" checked> Mostrar propuestas</label>
   </div>
   <div class="chips" id="chips"></div>
+</div></div>
+
+<div class="wrap">
   <div id="preview"><div class="placeholder-msg">Toca un barrio en el mapa o búscalo por nombre para generar su volante.</div></div>
 </div>
 <footer class="webfoot"><div class="wrap">
@@ -314,10 +331,10 @@ let MAPGL=null;
 function drawMap(){
  BGEO.features.forEach(f=>{const p=f.properties;p.colD=cDelta(p.d);p.colW=cMargin(p.c-p.a);});
  mapboxgl.accessToken='pk.eyJ1IjoiZ3J1bmR1bSIsImEiOiJjbXB6cWo1M2Uwa2l2MnFvamxxcXh5bDgxIn0.gGUXET8aMYfadSR8oVFDWg';
- MAPGL=new mapboxgl.Map({container:'map',style:'mapbox://styles/mapbox/light-v11',center:[-74.075,4.67],zoom:10.8,minZoom:9.2,maxZoom:16,maxBounds:[[-74.7,3.55],[-73.55,5.1]]});
+ MAPGL=new mapboxgl.Map({container:'map',style:'mapbox://styles/mapbox/dark-v11',center:[-74.075,4.67],zoom:10.8,minZoom:9.2,maxZoom:16,maxBounds:[[-74.7,3.55],[-73.55,5.1]]});
  MAPGL.addControl(new mapboxgl.NavigationControl({showCompass:false}),'top-right');
  let MAP_OK=false;
- MAPGL.on('error',e=>{const el=document.getElementById('map');if(!MAP_OK&&el&&!el.dataset.err){el.dataset.err=1;el.innerHTML='<div style="padding:40px;text-align:center;color:var(--muted);font-size:14px;">No se pudo cargar el mapa (revisa conexión o token). El buscador de barrios sigue funcionando.</div>';}});
+ MAPGL.on('error',e=>{const el=document.getElementById('map');if(!MAP_OK&&el&&!el.dataset.err){el.dataset.err=1;el.innerHTML='<div style="padding:40px;text-align:center;color:#4a2b03;font-size:14px;">No se pudo cargar el mapa (revisa conexión o token). El buscador de barrios sigue funcionando.</div>';}});
  MAPGL.on('load',()=>{
   MAP_OK=true;
   // etiquetas sin halo blanco: solo el color del texto
@@ -327,10 +344,10 @@ function drawMap(){
   MAPGL.addSource('barrios',{type:'geojson',data:BGEO});
   MAPGL.addSource('locs',{type:'geojson',data:LGEO});
   const firstSym=(MAPGL.getStyle().layers.find(l=>l.type==='symbol')||{}).id;
-  MAPGL.addLayer({id:'b-fill',type:'fill',source:'barrios',paint:{'fill-color':['get',mode==='delta'?'colD':'colW'],'fill-opacity':['interpolate',['linear'],['zoom'],10,0.85,12.5,0.65,14,0.4,15.5,0.18]}},firstSym);
+  MAPGL.addLayer({id:'b-fill',type:'fill',source:'barrios',paint:{'fill-color':['get',mode==='delta'?'colD':'colW'],'fill-opacity':['interpolate',['linear'],['zoom'],10,1,12.5,0.78,14,0.5,15.5,0.25]}},firstSym);
   MAPGL.addLayer({id:'b-line',type:'line',source:'barrios',paint:{'line-color':'#ffffff','line-width':0.4,'line-opacity':0.6}},firstSym);
-  MAPGL.addLayer({id:'l-line',type:'line',source:'locs',paint:{'line-color':'#33414d','line-width':1.1,'line-opacity':0.45}},firstSym);
-  MAPGL.addLayer({id:'b-sel',type:'line',source:'barrios',filter:['==',['get','cod'],''],paint:{'line-color':'#2f2f2d','line-width':2.5}},firstSym);
+  MAPGL.addLayer({id:'l-line',type:'line',source:'locs',paint:{'line-color':'#c9d4de','line-width':1.1,'line-opacity':0.5}},firstSym);
+  MAPGL.addLayer({id:'b-sel',type:'line',source:'barrios',filter:['==',['get','cod'],''],paint:{'line-color':'#ffffff','line-width':2.5}},firstSym);
   MAPGL.on('mousemove','b-fill',e=>{MAPGL.getCanvas().style.cursor='pointer';if(e.features.length)showTip(e.originalEvent,e.features[0].properties);});
   MAPGL.on('mouseleave','b-fill',()=>{MAPGL.getCanvas().style.cursor='';hideTip();});
   MAPGL.on('click','b-fill',e=>{if(e.features.length)pick(e.features[0].properties);});
