@@ -114,6 +114,9 @@
   .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
   .chip{font-size:12.5px;padding:6px 11px;border:1px solid var(--linea);border-radius:20px;cursor:pointer;background:#fbf9f4;}
   .chip:hover{border-color:var(--tinta);}
+  .chip-loc{background:var(--tinta);color:#fff;border-color:var(--tinta);font-weight:700;}
+  .chip-loc:hover{filter:brightness(1.12);}
+  .chip-cap{pointer-events:none;background:transparent;border:none;color:#4a2b03;font-weight:700;}
   .estado{margin-top:14px;font-size:13px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
   .pill{padding:5px 11px;border-radius:14px;font-weight:600;}
   .est-fuerte{background:#c0392b;color:#fff;}.est-medio{background:#d99204;color:#fff;}.est-leve{background:#1c4e80;color:#fff;}.est-bien{background:#1e3a8a;color:#fff;}
@@ -175,6 +178,9 @@
   .dl-btn{display:block;width:100%;max-width:280px;margin:0;padding:14px 24px;background:var(--acento);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;}
   .dl-btn:hover{filter:brightness(.92);}
   .dl-pin{background:var(--tinta);}
+  .dl-wa{background:#25D366;color:#fff;text-align:center;text-decoration:none;box-sizing:border-box;margin-top:10px;}
+  .dl-print{background:#fff;color:var(--tinta);border:2px solid var(--tinta);text-align:center;text-decoration:none;box-sizing:border-box;margin-top:10px;}
+  .dl-print:hover{background:var(--tinta);color:#fff;filter:none;}
   .dl-note{font-size:12.5px;color:var(--muted);text-align:center;margin-top:8px;min-height:18px;}
   .webfoot{background:var(--tinta);color:#fff;margin-top:56px;padding:36px 0 26px;font-size:12.5px;}
   .webfoot .wf-grid{display:flex;flex-wrap:wrap;gap:40px;}
@@ -185,6 +191,32 @@
   .webfoot a:hover{text-decoration:underline;}
   .wf-credit{margin-top:24px;padding-top:14px;border-top:1px solid rgba(255,255,255,.25);font-weight:700;}
   .vol-fit{width:100%;max-width:720px;}
+  /* —— versión blanco y negro (fotocopia) —— */
+  .vol-col{width:100%;max-width:720px;flex:0 0 auto;min-width:0;}
+  .vol-col .vol-fit{max-width:none;}
+  .bn-wrap{margin-top:18px;}
+  .bn-cap{font-weight:800;font-size:13px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+  .vol-bn .volante{background:#fff;}
+  .vol-bn .v-cab{background:#000;}
+  .vol-bn .v-kicker,.vol-bn .v-barrio,.vol-bn .v-cepeda,.vol-bn .v-cepeda .vr{color:#fff;}
+  .vol-bn .v-foto{filter:grayscale(1) contrast(1.12);}
+  .vol-bn .v-logro{background:#fff;border:1.5px solid #000;}
+  .vol-bn .v-logro .k{color:#000;}
+  .vol-bn .v-logro strong{color:#000;}
+  .vol-bn .v-logro span{color:#111;}
+  .vol-bn .v-panel{background:#fff;border:1.5px solid #000;}
+  .vol-bn .v-num{background:#000;color:#fff;}
+  .vol-bn .v-pt strong{color:#000;}
+  .vol-bn .v-pt .g{color:#111;}
+  .vol-bn .v-props li{color:#111;}
+  .vol-bn .v-pt .c{color:#000;border-left-color:#000;}
+  .vol-bn .v-fuente{color:#222;}
+  .vol-bn .v-pie{background:#000;}
+  .vol-bn .v-ph{background:#fff;}
+  .vol-bn .ph-word span{color:#000;}
+  .vol-bn .ph-sub{color:#000;}
+  .vol-bn .v-barra span{background:#000;}
+  .vol-bn .v-barra span:nth-child(2){background:#fff;border-top:1px solid #000;border-bottom:1px solid #000;}
   @media(max-width:768px){
     h1{font-size:48px;}
     header.top{padding-bottom:26px;}
@@ -205,6 +237,9 @@
     @page{size:215.9mm 279.4mm;margin:0;}
     body{background:#fff;}
     header.top,.banner,.band-dark,.band-orange,.maphead,.mapbox,.legend,.controls,.chips,.estado,.dl-btn,.dl-note,.lado,.src,.webfoot,#tip{display:none !important;}
+    .bn-cap{display:none !important;}
+    .bn-wrap{margin:0;}
+    .vol-bn{page-break-before:always;}
     .pv-grid{display:block;margin:0;}
     .wrap{padding:0;max-width:none;}
     #preview{margin:0;}
@@ -357,6 +392,7 @@ function drawMap(){
   MAPGL.addLayer({id:'b-sel',type:'line',source:'barrios',filter:['==',['get','cod'],''],paint:{'line-color':'#ffffff','line-width':2.5}},firstSym);
   MAPGL.on('mousemove','b-fill',e=>{MAPGL.getCanvas().style.cursor='pointer';if(e.features.length)showTip(e.originalEvent,e.features[0].properties);});
   MAPGL.on('mouseleave','b-fill',()=>{MAPGL.getCanvas().style.cursor='';hideTip();});
+  if(cur)MAPGL.setFilter('b-sel',['==',['get','cod'],String(cur.cod||'')]);
   MAPGL.on('click','b-fill',e=>{if(!e.features.length)return;const p=e.features[0].properties;const movil=window.matchMedia('(pointer:coarse)').matches;
    pick(p,movil); // en móvil: genera el volante abajo pero sin auto-scroll, para que el popup quede en contexto
    if(movil){showTip(e.originalEvent,p,true);clearTimeout(window.__tipT);window.__tipT=setTimeout(hideTip,5000);}});
@@ -455,9 +491,39 @@ async function tagSRGB(blob){
 }
 
 
+function _chip(txt,fn,cls){const c=document.createElement('span');c.className='chip'+(cls?' '+cls:'');c.textContent=txt;c.onclick=fn;CH.appendChild(c);}
+function chipsDefault(){
+ CH.innerHTML='';
+ ["El Rincón Norte","Quiroga","Restrepo","La Candelaria","Kennedy Central"].forEach(n=>{const p=BARR.find(x=>x.b===n);if(p)_chip(n,()=>pick(p));});
+ if(navigator.geolocation)_chip('📍 Barrios cerca de mí',()=>chipsPorUbicacion(false),'chip-loc');
+}
+function _centroide(f){let g=f.geometry,cs=g.type==='MultiPolygon'?g.coordinates.reduce((a,b)=>b[0].length>a[0].length?b:a)[0]:g.coordinates[0];let x=0,y=0;cs.forEach(c=>{x+=c[0];y+=c[1];});return[x/cs.length,y/cs.length];}
+function _barrioEnPunto(lo,la){
+ for(const f of BGEO.features){
+  const polys=f.geometry.type==='MultiPolygon'?f.geometry.coordinates:[f.geometry.coordinates];
+  for(const p of polys){const r=p[0];let dentro=false;
+   for(let i=0,j=r.length-1;i<r.length;j=i++){const xi=r[i][0],yi=r[i][1],xj=r[j][0],yj=r[j][1];
+    if(((yi>la)!==(yj>la))&&(lo<(xj-xi)*(la-yi)/(yj-yi)+xi))dentro=!dentro;}
+   if(dentro)return f.properties;}}
+ return null;}
+function chipsPorUbicacion(silencioso){
+ if(!navigator.geolocation)return;
+ navigator.geolocation.getCurrentPosition(pos=>{
+  const lo=pos.coords.longitude,la=pos.coords.latitude;
+  if(!window.__cent){window.__cent={};BGEO.features.forEach(f=>{window.__cent[f.properties.cod]=_centroide(f);});}
+  const cerca=BARR.map(p=>{const c=window.__cent[p.cod]||[0,0];const dx=c[0]-lo,dy=c[1]-la;return{p,d:dx*dx+dy*dy};}).sort((a,b)=>a.d-b.d).slice(0,6);
+  if(!cerca.length||cerca[0].d>0.09){if(!silencioso)alert('Parece que estás lejos de Bogotá — te dejamos las sugerencias generales.');return;}
+  track('chips_ubicacion',{barrio:cerca[0].p.b});
+  CH.innerHTML='';
+  cerca.forEach(({p})=>_chip(p.b,()=>pick(p)));
+  _chip('Tu barrio: toca uno ↑',()=>{},'chip-cap');
+  if(!cur){const aqui=_barrioEnPunto(lo,la)||cerca[0].p;pick(aqui,true);}
+ },err=>{if(!silencioso)alert('No pudimos obtener tu ubicación. Revisa el permiso del navegador.');},{timeout:8000,maximumAge:600000});
+}
 function init(){
  drawLegend();drawMap();
- CH.innerHTML='';["El Rincon Norte","Quiroga","Restrepo","La Candelaria","Kennedy Central"].forEach(n=>{const p=BARR.find(x=>x.b===n);if(!p)return;const c=document.createElement('span');c.className='chip';c.textContent=n;c.onclick=()=>pick(p);CH.appendChild(c);});
+ chipsDefault();
+ if(navigator.permissions&&navigator.geolocation)navigator.permissions.query({name:'geolocation'}).then(s=>{if(s.state==='granted')chipsPorUbicacion(true);}).catch(()=>{});
  TC.onchange=()=>cur&&render();
  document.querySelectorAll('.mode').forEach(b=>b.onclick=()=>{document.querySelectorAll('.mode').forEach(x=>x.classList.remove('on'));b.classList.add('on');mode=b.dataset.m;drawLegend();recolor();});
 }
@@ -502,7 +568,8 @@ function render(){const x=cur, full=true, showProps=TC.checked;
  const arco=(name.toUpperCase()+' CON');
  const fs=arco.length>24?12.5:arco.length>17?14.5:17;
  const pin=`<svg class="pin" viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg"><defs><path id="aT" d="M 24,150 A 116,116 0 0 1 256,150"/><path id="aB" d="M 31,146 A 109,109 0 0 0 249,146"/><clipPath id="cf"><circle cx="140" cy="140" r="127"/></clipPath></defs><circle cx="140" cy="140" r="138" fill="var(--tinta)"/><circle cx="140" cy="140" r="131" fill="none" stroke="var(--acento)" stroke-width="3"/><image href="images/imgboton.png" x="20" y="36" width="240" height="240" clip-path="url(#cf)" preserveAspectRatio="xMidYMid meet"/><text class="pin-t" style="font-size:${fs}px"><textPath href="#aT" startOffset="50%" text-anchor="middle">${arco}</textPath></text><text class="pin-c"><textPath href="#aB" startOffset="50%" text-anchor="middle">CEPEDA</textPath></text></svg>`;
- P.innerHTML=`<div class="pv-grid"><div class="vol-fit"><div class="volante"><div class="v-cab"><img class="v-foto" src="images/fotoIvanAida.avif" alt=""><div class="v-cabtxt"><div class="v-barrio">${name.toUpperCase()} CON</div><div class="v-cepeda">CEPED<span class="ka">A</span></div><div class="v-kicker">EL PODER DE LA VERDAD</div></div></div><div class="v-body">${logro}<div class="v-panel">${puntos}</div><div class="v-fuente">Propuestas tomadas de la Caja de herramientas oficial · presidenteivancepeda.com/cajadeherramientas</div></div><div class="v-pie"><div class="v-lema">En segunda vuelta, vota Cepeda.</div><div class="v-ph"><div class="ph-word"><span class="o">P</span><span class="b">A</span><span class="r">C</span><span class="g">T</span><span class="p">O</span></div><div class="ph-sub">HISTÓRICO</div></div></div><div class="v-barra"><span></span><span></span><span></span></div></div></div><div class="lado">${(()=>{const bx=cur;if(!bx)return'';const m26=bx.c-bx.a;const[dc]=est(bx.d);return `<div class="bpanel"><div class="bn">${bx.b}</div><div class="bl">${bx.loc} · UPZ ${bx.upz} · ${bx.uso}</div><div class="row"><span>Estrato</span><b>${bx.estrato}</b></div><div class="row big"><span>Cepeda</span><b>${bx.c}%</b></div><div class="row big"><span>Abelardo</span><b>${bx.a}%</b></div><div class="row dcap ${bx.w==='C'?'win-c':'win-a'}"><span>${bx.w==='C'?'Va Cepeda':'Va Abelardo'}</span><b>+${Math.abs(m26).toFixed(0)}%</b></div><div class="row dcap ${dc}"><span>vs Petro 2022</span><b>${bx.d>0?'+':''}${bx.d}%</b></div><div class="pfoot"><button class="img-btn" onclick="downloadPanelImg()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Descargar imagen</button></div></div>`;})()}<div class="custom"><div class="cu-title">Personaliza tu volante</div><label class="cu-lab">Nombre del barrio</label><input id="cuName" class="cu-input" type="text" value="${name}"><label class="cu-lab">Propuesta 1</label><select id="cuSel0" class="cu-sel"></select><label class="cu-lab">Propuesta 2</label><select id="cuSel1" class="cu-sel"></select><label class="cu-lab">Propuesta 3</label><select id="cuSel2" class="cu-sel"></select></div><button class="dl-btn" id="dl">Descarga Volante en PDF</button><div class="dl-note">Se abre el diálogo de impresión — elige "Guardar como PDF" (hoja carta).</div>${pin}<button class="dl-btn dl-pin" id="dlstick">Stickers y pines en PDF</button></div></div>`;
+ const volHTML=`<div class="volante"><div class="v-cab"><img class="v-foto" src="images/fotoIvanAida.avif" alt=""><div class="v-cabtxt"><div class="v-barrio">${name.toUpperCase()} CON</div><div class="v-cepeda">CEPED<span class="ka">A</span></div><div class="v-kicker">EL PODER DE LA VERDAD</div></div></div><div class="v-body">${logro}<div class="v-panel">${puntos}</div><div class="v-fuente">Propuestas tomadas de la Caja de herramientas oficial · presidenteivancepeda.com/cajadeherramientas</div></div><div class="v-pie"><div class="v-lema">En segunda vuelta, vota Cepeda.</div><div class="v-ph"><div class="ph-word"><span class="o">P</span><span class="b">A</span><span class="r">C</span><span class="g">T</span><span class="p">O</span></div><div class="ph-sub">HISTÓRICO</div></div></div><div class="v-barra"><span></span><span></span><span></span></div></div>`;
+ P.innerHTML=`<div class="pv-grid"><div class="vol-col"><div class="vol-fit">${volHTML}</div><div class="bn-wrap"><div class="bn-cap">Versión blanco y negro — alto contraste, ideal para fotocopias</div><div class="vol-fit vol-bn">${volHTML}</div></div></div><div class="lado">${(()=>{const bx=cur;if(!bx)return'';const m26=bx.c-bx.a;const[dc]=est(bx.d);return `<div class="bpanel"><div class="bn">${bx.b}</div><div class="bl">${bx.loc} · UPZ ${bx.upz} · ${bx.uso}</div><div class="row"><span>Estrato</span><b>${bx.estrato}</b></div><div class="row big"><span>Cepeda</span><b>${bx.c}%</b></div><div class="row big"><span>Abelardo</span><b>${bx.a}%</b></div><div class="row dcap ${bx.w==='C'?'win-c':'win-a'}"><span>${bx.w==='C'?'Va Cepeda':'Va Abelardo'}</span><b>+${Math.abs(m26).toFixed(0)}%</b></div><div class="row dcap ${dc}"><span>vs Petro 2022</span><b>${bx.d>0?'+':''}${bx.d}%</b></div><div class="pfoot"><button class="img-btn" onclick="downloadPanelImg()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Descargar imagen</button></div></div>`;})()}<div class="custom"><div class="cu-title">Personaliza tu volante</div><label class="cu-lab">Nombre del barrio</label><input id="cuName" class="cu-input" type="text" value="${name}"><label class="cu-lab">Propuesta 1</label><select id="cuSel0" class="cu-sel"></select><label class="cu-lab">Propuesta 2</label><select id="cuSel1" class="cu-sel"></select><label class="cu-lab">Propuesta 3</label><select id="cuSel2" class="cu-sel"></select></div><button class="dl-btn" id="dl">Descarga Volante en PDF</button><div class="dl-note">Se abre el diálogo de impresión — elige "Guardar como PDF" (hoja carta).</div><a class="dl-btn dl-wa" href="https://wa.me/?text=${encodeURIComponent('¡Vuela Cepeda! Mira el volante de '+name+' — encuentra tu barrio en el mapa y descarga el tuyo: https://gramagrass.github.io/concepeda/')}" target="_blank" rel="noopener" onclick="track('compartir_whatsapp',{barrio:cur?cur.b:''})">Enviar por WhatsApp</a><a class="dl-btn dl-print" href="https://www.google.com/maps/search/?api=1&query=fotocopiadoras" target="_blank" rel="noopener" onclick="track('donde_imprimir',{})">📍 Dónde imprimir</a>${pin}<button class="dl-btn dl-pin" id="dlstick">Descarga Stickers en PDF</button></div></div>`;
  fitVolante();
  document.getElementById('dl').onclick=()=>{track('descarga_volante',{barrio:cur?cur.b:'',localidad:cur?cur.loc:''});window.print();};
  const bs=document.getElementById('dlstick'); if(bs) bs.onclick=descargarStickers;
@@ -512,19 +579,20 @@ function render(){const x=cur, full=true, showProps=TC.checked;
   el.onchange=()=>{custom.ids[i]=el.value;render();};});
  const ni=document.getElementById('cuName');
  if(ni){ni.oninput=()=>{custom.name=ni.value;const up=((ni.value||x.b)).toUpperCase();
-   const vb=document.querySelector('.v-barrio');if(vb)vb.textContent=up+' CON';
+   document.querySelectorAll('.v-barrio').forEach(vb=>vb.textContent=up+' CON');
    const tp=document.querySelector('.pin-t textPath');if(tp)tp.textContent=up+' CON';};}}
 function fitVolante(){
- const w=document.querySelector('.vol-fit'),v=document.querySelector('.volante');
- if(!w||!v)return;
- if(window.innerWidth<=768){
-   const avail=w.clientWidth, sc=Math.min(1,avail/720);
-   v.style.width='720px'; v.style.maxWidth='none'; v.style.transformOrigin='top left'; v.style.transform='scale('+sc+')';
-   w.style.height=(v.getBoundingClientRect().height)+'px';
- } else { v.style.transform=''; v.style.width=''; v.style.maxWidth=''; w.style.height=''; }
+ document.querySelectorAll('.vol-fit').forEach(w=>{
+  const v=w.querySelector('.volante'); if(!v)return;
+  if(window.innerWidth<=768){
+    const avail=w.clientWidth, sc=Math.min(1,avail/720);
+    v.style.width='720px'; v.style.maxWidth='none'; v.style.transformOrigin='top left'; v.style.transform='scale('+sc+')';
+    w.style.height=(v.getBoundingClientRect().height)+'px';
+  } else { v.style.transform=''; v.style.width=''; v.style.maxWidth=''; w.style.height=''; }
+ });
 }
 // antes de imprimir: limpiar los estilos inline del ajuste móvil para que el volante use el tamaño carta exacto
-function _limpiarFit(){const v=document.querySelector('.volante'),w=document.querySelector('.vol-fit');if(v){v.style.transform='';v.style.width='';v.style.maxWidth='';}if(w)w.style.height='';}
+function _limpiarFit(){document.querySelectorAll('.volante').forEach(v=>{v.style.transform='';v.style.width='';v.style.maxWidth='';});document.querySelectorAll('.vol-fit').forEach(w=>w.style.height='');}
 window.addEventListener('beforeprint',_limpiarFit);
 window.addEventListener('afterprint',()=>{fitVolante();});
 if(window.matchMedia){const mq=window.matchMedia('print');if(mq.addEventListener)mq.addEventListener('change',e=>{e.matches?_limpiarFit():fitVolante();});}
