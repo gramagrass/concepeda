@@ -77,7 +77,9 @@
   .barrio.sel{stroke:var(--tinta);stroke-width:1.6;}
   .locline{fill:none;stroke:#33414d;stroke-width:.9;stroke-opacity:.55;pointer-events:none;}
   .loclabel{font-size:10px;fill:#22303c;pointer-events:none;text-anchor:middle;font-weight:700;paint-order:stroke;stroke:#fff;stroke-width:2.4px;stroke-linejoin:round;}
-  .legend{display:flex;align-items:center;gap:6px;font-size:11px;color:#4a2b03;font-weight:600;flex-wrap:wrap;margin-top:10px;}
+  .legrow{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-top:12px;}
+  .busca-lab{font-family:'boldfinger',"Nunito Sans",Arial,sans-serif;font-size:19px;color:#000;letter-spacing:.6px;}
+  .legend{display:flex;align-items:center;gap:6px;font-size:11px;color:#4a2b03;font-weight:600;flex-wrap:wrap;}
   .legend .bar{display:flex;height:11px;border-radius:3px;overflow:hidden;width:180px;border:1px solid rgba(0,0,0,.25);}
   .legend .bar span{flex:1;}
   .tip{position:fixed;pointer-events:none;background:var(--tinta);color:#fff;padding:10px 13px;border-radius:10px;font-size:12.5px;max-width:250px;box-shadow:0 6px 20px rgba(0,0,0,.28);opacity:0;transition:opacity .08s;z-index:30;line-height:1.45;}
@@ -110,13 +112,11 @@
   .results li{padding:10px 14px;cursor:pointer;font-size:14px;border-bottom:1px solid #f0ece2;}
   .results li:last-child{border-bottom:none;}.results li:hover{background:#f7f4ec;}
   .results li small{color:var(--muted);}
-  .toggle{font-size:13.5px;display:flex;align-items:center;gap:6px;cursor:pointer;}
   .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
   .chip{font-size:12.5px;padding:6px 11px;border:1px solid var(--linea);border-radius:20px;cursor:pointer;background:#fbf9f4;}
   .chip:hover{border-color:var(--tinta);}
   .chip-loc{background:var(--tinta);color:#fff;border-color:var(--tinta);font-weight:700;}
   .chip-loc:hover{filter:brightness(1.12);}
-  .chip-cap{pointer-events:none;background:transparent;border:none;color:#4a2b03;font-weight:700;}
   .estado{margin-top:14px;font-size:13px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
   .pill{padding:5px 11px;border-radius:14px;font-weight:600;}
   .est-fuerte{background:#c0392b;color:#fff;}.est-medio{background:#d99204;color:#fff;}.est-leve{background:#1c4e80;color:#fff;}.est-bien{background:#1e3a8a;color:#fff;}
@@ -237,7 +237,7 @@
   @media print{
     @page{size:215.9mm 279.4mm;margin:0;}
     body{background:#fff;}
-    header.top,.banner,.band-dark,.band-orange,.maphead,.mapbox,.legend,.controls,.chips,.estado,.dl-btn,.dl-note,.lado,.src,.webfoot,#tip{display:none !important;}
+    header.top,.banner,.band-dark,.band-orange,.maphead,.mapbox,.legrow,.legend,.controls,.chips,.estado,.dl-btn,.dl-note,.lado,.src,.webfoot,#tip{display:none !important;}
     .bn-cap{display:none !important;}
     .bn-wrap{margin:0;}
     .vol-bn{page-break-before:always;}
@@ -307,11 +307,11 @@
 
 <div class="band-orange"><div class="wrap">
   <div class="mapbox"><div id="map"></div></div>
-  <div class="legend" id="legend"></div>
+  <div class="legrow"><div class="busca-lab">Busca tu barrio 👇</div><div class="legend" id="legend"></div></div>
 
   <div class="controls">
     <div class="search"><input id="q" type="text" placeholder="Busca tu barrio: El Rincón, Quiroga, Kennedy, Restrepo…" autocomplete="off"><ul class="results" id="results"></ul></div>
-    <label class="toggle"><input type="checkbox" id="tc" checked> Mostrar propuestas</label>
+    
   </div>
   <div class="chips" id="chips"></div>
 </div></div>
@@ -520,7 +520,6 @@ function chipsPorUbicacion(silencioso){
   track('chips_ubicacion',{barrio:cerca[0].p.b});
   CH.innerHTML='';
   cerca.forEach(({p})=>_chip(p.b,()=>pick(p)));
-  _chip('Tu barrio: toca uno ↑',()=>{},'chip-cap');
   if(!cur){const aqui=_barrioEnPunto(lo,la)||cerca[0].p;pick(aqui,true);}
  },err=>{if(!silencioso)alert('No pudimos obtener tu ubicación. Revisa el permiso del navegador.');},{timeout:8000,maximumAge:600000});
 }
@@ -530,7 +529,6 @@ function init(){
  if(_h){const p=BARR.find(x=>String(x.cod)===_h[1]);if(p){pick(p,true);track('llegada_link_directo',{barrio:p.b});}}
  chipsDefault();
  if(navigator.permissions&&navigator.geolocation)navigator.permissions.query({name:'geolocation'}).then(s=>{if(s.state==='granted')chipsPorUbicacion(true);}).catch(()=>{});
- TC.onchange=()=>cur&&render();
  document.querySelectorAll('.mode').forEach(b=>b.onclick=()=>{document.querySelectorAll('.mode').forEach(x=>x.classList.remove('on'));b.classList.add('on');mode=b.dataset.m;drawLegend();recolor();});
 }
 const sinTildes=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
@@ -541,7 +539,7 @@ function track(ev,p){try{if(typeof gtag==='function')gtag('event',ev,p);}catch(e
 function pick(x,sinScroll){if(!x)return;cur=x;track('barrio_seleccionado',{barrio:x.b,localidad:x.loc,ganador:x.w});if(x.cod)try{history.replaceState(null,'','#b='+x.cod);}catch(e){}custom={name:null,ids:[null,null,null]};Q.value=x.b;R.style.display='none';
  if(MAPGL&&MAPGL.getLayer('b-sel'))MAPGL.setFilter('b-sel',['==',['get','cod'],String(x.cod||'')]);
  render();if(!sinScroll)P.scrollIntoView({behavior:'smooth',block:'nearest'});}
-function render(){const x=cur, full=true, showProps=TC.checked;
+function render(){const x=cur, full=true, showProps=true;
  const seed=hsh(String(x.cod||x.b));
  const rel=id=>{const m=RELEV[id];return m&&m[String(x.estrato)]!==undefined?m[String(x.estrato)]:0;};
  const rot=(arr,k)=>arr.length?arr.slice(k%arr.length).concat(arr.slice(0,k%arr.length)):arr;
