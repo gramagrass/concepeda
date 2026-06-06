@@ -26,13 +26,18 @@
   gtag('config', 'G-473G461JX6');
 </script>
 
+<!-- Tema: oscuro (escala de grises) por defecto; claro = versión a color -->
+<script>
+  (function(){try{var t=localStorage.getItem('tema');if(t!=='light')t='dark';document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','dark');}})();
+</script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <link href="https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.css" rel="stylesheet">
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.6.0/mapbox-gl.js"></script>
 <style>
-  @font-face{font-family:'boldfinger';src:url('https://www.presidenteivancepeda.com/_next/static/media/Boldfinger-s.p.11htjmau7w4ly.ttf') format('truetype');font-weight:400 900;font-display:swap;}
+  @font-face{font-family:'boldfinger';src:url('fonts/Boldfinger.ttf') format('truetype'),url('https://www.presidenteivancepeda.com/_next/static/media/Boldfinger-s.p.11htjmau7w4ly.ttf') format('truetype');font-weight:400 900;font-display:swap;}
   @font-face{font-family:'SharpSansDisp';src:url('fonts/SharpSansDispNo1-Bold.woff2') format('woff2'),url('fonts/SharpSansDispNo1-Bold.woff') format('woff');font-weight:700;font-display:swap;}
   :root{--tinta:#544595;--acento:#f3930d;--acento2:#f7a83a;--purpura:#874088;--bg:#f5f3ed;--card:#fff;--texto:#1d1b28;--muted:#6b6862;--linea:#e0ddd4;}
   *{box-sizing:border-box;margin:0;padding:0;}
@@ -279,10 +284,104 @@
     .v-qr{width:72px;height:72px;}
     .v-barra{height:7px;}
   }
+
+  /* ===================== TEMA OSCURO · escala de grises ===================== */
+  /* Nota: NO se tocan --tinta/--acento/--acento2/--purpura para que el volante
+     descargable (PNG de stickers/pin) y el PDF impreso conserven el color. */
+  [data-theme="dark"]{--bg:#181a20;--card:#23252c;--texto:#e8e9ec;--muted:#9a9ba3;--linea:#3a3d45;}
+
+  /* Cabecera */
+  [data-theme="dark"] header.top{background:#272a33;}
+  [data-theme="dark"] .brand{color:#9a9ca6;}            /* antes amarillo (kicker) → gris etiqueta */
+  [data-theme="dark"] h1{color:#fff;}                   /* titular principal → blanco */
+  [data-theme="dark"] h1 span{color:#b4b6c0 !important;}/* antes rojo/naranja (¡ ! BOGOTÁ) → gris acento */
+  [data-theme="dark"] .hashtag{color:#c6c8d1;}          /* antes amarillo (enlace) → gris claro */
+  [data-theme="dark"] .hashtag:hover{color:#fff;}
+  [data-theme="dark"] .lockup:hover{color:#c9cad2;}
+
+  /* Bandas */
+  [data-theme="dark"] .band-dark{background:#2f323b;}
+  [data-theme="dark"] .band-orange{background:#21242b;}
+
+  /* Mapa en gris (filtro CSS sobre el lienzo de Mapbox y la leyenda) */
+  [data-theme="dark"] #map{filter:grayscale(1) contrast(.96) brightness(.96);}
+  [data-theme="dark"] .legend{filter:grayscale(1);color:#c9cad2;}
+  [data-theme="dark"] .busca-lab{color:#e8e9ec;}
+
+  /* Botones de modo */
+  [data-theme="dark"] .mode.on[data-m="win"],[data-theme="dark"] .mode.on[data-m="delta"]{background:#5a5d68;border-color:transparent;}
+
+  /* Búsqueda y resultados */
+  [data-theme="dark"] .search input{background:#1b1d22;color:#e8e9ec;border-color:#33353d;}
+  [data-theme="dark"] .search input::placeholder{color:#7c7d86;}
+  [data-theme="dark"] .search input:focus{border-color:#8a8c98;}
+  [data-theme="dark"] .results{background:#1b1d22;border-color:#33353d;}
+  [data-theme="dark"] .results li{border-bottom-color:#2a2c33;color:#e8e9ec;}
+  [data-theme="dark"] .results li:hover{background:#26282f;}
+
+  /* Chips */
+  [data-theme="dark"] .chip{background:#1b1d22;border-color:#33353d;color:#d4d5dc;}
+  [data-theme="dark"] .chip:hover{border-color:#8a8c98;}
+  [data-theme="dark"] .chip-loc{background:#3a3d46;border-color:#3a3d46;color:#fff;}
+
+  /* Banner */
+  [data-theme="dark"] .banner{background:#26282f;border-color:#44464f;color:#d4d5dc;}
+
+  /* Pastillas de estado */
+  [data-theme="dark"] .est-fuerte,[data-theme="dark"] .est-medio,[data-theme="dark"] .est-leve,[data-theme="dark"] .est-bien{background:#4a4d56;color:#fff;}
+  [data-theme="dark"] .est-info{color:#e8e9ec;}
+
+  /* Panel de barrio + tooltip */
+  [data-theme="dark"] .bpanel{background:#262932;color:#c2c4cc;}      /* etiquetas → gris medio */
+  [data-theme="dark"] .bpanel .bn{color:#fff;}                        /* nombre barrio → blanco */
+  [data-theme="dark"] .bpanel .row b{color:#fff;}                     /* antes amarillo (valores) → blanco brillante */
+  [data-theme="dark"] .tip{background:#262932;color:#c2c4cc;}
+  [data-theme="dark"] .tip .bn{color:#fff;}
+  [data-theme="dark"] .tip .row b{color:#fff;}
+  [data-theme="dark"] .win-c,[data-theme="dark"] .win-a,
+  [data-theme="dark"] .dif-pos,[data-theme="dark"] .dif-neg,[data-theme="dark"] .dif-ret{filter:grayscale(1);}
+
+  /* Botones de descarga */
+  [data-theme="dark"] .dl-btn{background:#4a4d56;color:#fff;}
+  [data-theme="dark"] .dl-pin{background:#3a3d46;}
+  [data-theme="dark"] .dl-wa{background:#2f6e4a;}
+  [data-theme="dark"] .dl-print{background:transparent;color:#e8e9ec;border-color:#6b6e79;}
+  [data-theme="dark"] .dl-print:hover{background:#33353d;color:#fff;}
+
+  /* Panel personalizar */
+  [data-theme="dark"] .custom{background:#1b1d22;border-color:#33353d;}
+  [data-theme="dark"] .cu-title{color:#e8e9ec;}
+  [data-theme="dark"] .cu-input,[data-theme="dark"] .cu-sel{background:#22242b;color:#e8e9ec;border-color:#33353d;}
+
+  /* Pie */
+  [data-theme="dark"] .webfoot{background:#1d1f25;}
+  [data-theme="dark"] .webfoot h4{color:#9a9ca6;}      /* antes amarillo (título sección) → gris etiqueta */
+  [data-theme="dark"] .webfoot a{color:#c6c8d1;}       /* antes amarillo (enlaces) → gris claro */
+  [data-theme="dark"] .webfoot a:hover{color:#fff;}
+  [data-theme="dark"] .wf-credit{border-top-color:#33353d;}
+
+  /* Volante en pantalla: B/N en oscuro, a color en claro */
+  [data-theme="light"] .bn-wrap{display:none;}
+  [data-theme="dark"] .vol-col > .vol-fit{display:none;}
+
+  /* Botón de cambio de tema */
+  .theme-toggle{position:absolute;top:16px;right:20px;z-index:5;display:inline-flex;align-items:center;gap:7px;background:rgba(0,0,0,.22);color:#fff;border:1.5px solid rgba(255,255,255,.55);border-radius:20px;padding:7px 14px;font-family:"Nunito Sans",Arial,sans-serif;font-weight:800;font-size:11.5px;text-transform:uppercase;letter-spacing:.6px;cursor:pointer;transition:border-color .15s,background .15s;}
+  .theme-toggle:hover{border-color:#fff;}
+  .theme-toggle .ico{font-size:14px;line-height:1;}
+  @media(max-width:768px){.theme-toggle{top:10px;right:12px;padding:6px 11px;font-size:10.5px;}}
+
+  /* Al imprimir: SIEMPRE ambas versiones del volante (color + B/N), sin importar el tema */
+  @media print{
+    .vol-col > .vol-fit,[data-theme="dark"] .vol-col > .vol-fit{display:block !important;}
+    .bn-wrap,[data-theme="light"] .bn-wrap{display:block !important;}
+    .theme-toggle{display:none !important;}
+  }
 </style>
 </head>
 <body>
-<header class="top"><div class="wrap">
+<header class="top">
+  <button id="themeToggle" class="theme-toggle" type="button" aria-label="Cambiar tema"><span class="ico">☀</span><span class="lbl">Color</span></button>
+  <div class="wrap">
   <img class="top-foto" src="images/fotoIvanAida.avif" alt="">
   <div class="head-txt">
   <div class="brand">El poder de la verdad · Segunda vuelta</div>
@@ -612,7 +711,7 @@ async function descargarStickers(){
  const arco=(name.toUpperCase()+' CON');
  const fs=arco.length>24?12.5:arco.length>17?14.5:17;
  if(!window.__pinFoto){try{window.__pinFoto=await toDataURL('images/imgboton.png');}catch(e){window.__pinFoto='';}}
- if(window.__pinFont===undefined){try{window.__pinFont=await toDataURL('https://www.presidenteivancepeda.com/_next/static/media/Boldfinger-s.p.11htjmau7w4ly.ttf');}catch(e){window.__pinFont=null;}}
+ if(window.__pinFont===undefined){try{window.__pinFont=await toDataURL('fonts/Boldfinger.ttf');}catch(e){try{window.__pinFont=await toDataURL('https://www.presidenteivancepeda.com/_next/static/media/Boldfinger-s.p.11htjmau7w4ly.ttf');}catch(e2){window.__pinFont=null;}}}
  const ff=window.__pinFont?`@font-face{font-family:'boldfinger';src:url(${window.__pinFont}) format('truetype');}`:'';
  // un pin como <svg> anidado reutilizable (viewBox 280, igual al del sidebar)
  const pinSvg=(x,y,d,i)=>`<svg x="${x}" y="${y}" width="${d}" height="${d}" viewBox="0 0 280 280">
@@ -648,7 +747,7 @@ async function descargarPin(){
  const nota=document.querySelector('.dl-note');
  try{
   if(!window.__pinFoto) window.__pinFoto=await toDataURL('images/imgboton.png');
-  if(window.__pinFont===undefined){try{window.__pinFont=await toDataURL('https://www.presidenteivancepeda.com/_next/static/media/Boldfinger-s.p.11htjmau7w4ly.ttf');}catch(e){window.__pinFont=null;}}
+  if(window.__pinFont===undefined){try{window.__pinFont=await toDataURL('fonts/Boldfinger.ttf');}catch(e){try{window.__pinFont=await toDataURL('https://www.presidenteivancepeda.com/_next/static/media/Boldfinger-s.p.11htjmau7w4ly.ttf');}catch(e2){window.__pinFont=null;}}}
   let src=svgEl.outerHTML.replace('images/imgboton.png',window.__pinFoto);
   const ff=window.__pinFont?`@font-face{font-family:'boldfinger';src:url(${window.__pinFont}) format('truetype');}`:'';
   const style=`<style>${ff} text{font-family:'boldfinger',Arial,sans-serif;} .pin-t{fill:#ffffff;letter-spacing:1.5px;} .pin-c{font-size:41px;fill:#ffffff;letter-spacing:3.5px;}</style>`;
@@ -664,6 +763,28 @@ async function descargarPin(){
   const a=document.createElement('a');a.download='pin-'+((custom.name&&custom.name.trim())||cur.b).replace(/\s+/g,'-').toLowerCase()+'.png';a.href=cv.toDataURL('image/png');a.click();
  }catch(e){if(nota)nota.textContent='Para descargar el pin abre el sitio desde un servidor (no con doble clic).';}
 }
+</script>
+
+<script>
+/* Cambio de tema: oscuro (escala de grises) ⇆ claro (a color). Por defecto: oscuro. */
+(function(){
+  var btn=document.getElementById('themeToggle');
+  if(!btn)return;
+  var ico=btn.querySelector('.ico'), lbl=btn.querySelector('.lbl');
+  function paint(t){
+    if(t==='light'){ico.textContent='☾';lbl.textContent='B/N';btn.setAttribute('aria-label','Cambiar a blanco y negro');}
+    else{ico.textContent='☀';lbl.textContent='Color';btn.setAttribute('aria-label','Cambiar a color');}
+  }
+  paint(document.documentElement.getAttribute('data-theme')||'dark');
+  btn.addEventListener('click',function(){
+    var cur=document.documentElement.getAttribute('data-theme')||'dark';
+    var next=cur==='dark'?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    try{localStorage.setItem('tema',next);}catch(e){}
+    paint(next);
+    if(typeof fitVolante==='function'){try{fitVolante();}catch(e){}}
+  });
+})();
 </script>
 </body>
 </html>
