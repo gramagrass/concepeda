@@ -288,7 +288,7 @@
   /* ===================== TEMA OSCURO · escala de grises ===================== */
   /* Nota: NO se tocan --tinta/--acento/--acento2/--purpura para que el volante
      descargable (PNG de stickers/pin) y el PDF impreso conserven el color. */
-  [data-theme="dark"]{--bg:#181a20;--card:#23252c;--texto:#e8e9ec;--muted:#9a9ba3;--linea:#3a3d45;}
+  [data-theme="dark"]{--bg:#2a2c32;--card:#2f3138;--texto:#e8e9ec;--muted:#9a9ba3;--linea:#3f424a;}
 
   /* Cabecera */
   [data-theme="dark"] header.top{background:#272a33;}
@@ -301,11 +301,11 @@
 
   /* Bandas */
   [data-theme="dark"] .band-dark{background:#2f323b;}
-  [data-theme="dark"] .band-orange{background:#21242b;}
+  [data-theme="dark"] .band-orange{background:#25272b;}
 
   /* Mapa en gris (filtro CSS sobre el lienzo de Mapbox y la leyenda) */
-  [data-theme="dark"] #map{filter:grayscale(1) contrast(.96) brightness(.96);}
-  [data-theme="dark"] .legend{filter:grayscale(1);color:#c9cad2;}
+  [data-theme="dark"] #map{filter:grayscale(.72) saturate(.9) contrast(.96) brightness(.96);}
+  [data-theme="dark"] .legend{filter:grayscale(.72) saturate(.9);color:#c9cad2;}
   [data-theme="dark"] .busca-lab{color:#e8e9ec;}
 
   /* Botones de modo */
@@ -339,7 +339,7 @@
   [data-theme="dark"] .tip .bn{color:#fff;}
   [data-theme="dark"] .tip .row b{color:#fff;}
   [data-theme="dark"] .win-c,[data-theme="dark"] .win-a,
-  [data-theme="dark"] .dif-pos,[data-theme="dark"] .dif-neg,[data-theme="dark"] .dif-ret{filter:grayscale(1);}
+  [data-theme="dark"] .dif-pos,[data-theme="dark"] .dif-neg,[data-theme="dark"] .dif-ret{filter:grayscale(.72) saturate(.9);}
 
   /* Botones de descarga */
   [data-theme="dark"] .dl-btn{background:#4a4d56;color:#fff;}
