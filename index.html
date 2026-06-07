@@ -41,7 +41,7 @@
   @font-face{font-family:'SharpSansDisp';src:url('fonts/SharpSansDispNo1-Bold.woff2') format('woff2'),url('fonts/SharpSansDispNo1-Bold.woff') format('woff');font-weight:700;font-display:swap;}
   :root{--tinta:#544595;--acento:#f3930d;--acento2:#f7a83a;--purpura:#874088;--bg:#f5f3ed;--card:#fff;--texto:#1d1b28;--muted:#6b6862;--linea:#e0ddd4;}
   *{box-sizing:border-box;margin:0;padding:0;}
-  body{font-family:"Nunito Sans","Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--texto);line-height:1.5;}
+  body{font-family:"Nunito Sans","Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--texto);line-height:1.5;}   html,body{overflow-x:hidden;max-width:100%;}
   .wrap{max-width:1080px;margin:0 auto;padding:0 20px 60px;}
   .band-dark{background:#e63329;}
   .band-dark .wrap{padding:14px 20px 12px;}
@@ -69,12 +69,12 @@
   .maphead{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:10px;margin-top:0;}
   .maptitle{font-family:'boldfinger',"Nunito Sans",Arial,sans-serif;font-size:24px;font-weight:700;color:#fff;letter-spacing:.4px;}
   .maptitle small{display:block;font-weight:400;font-size:12px;color:rgba(255,255,255,.65);max-width:560px;}
-  .modes{display:flex;gap:6px;}
+  .modes{display:flex;gap:6px;flex-wrap:wrap;}
   .mode{font-size:12px;padding:7px 15px;border:1.5px solid rgba(255,255,255,.5);border-radius:18px;cursor:pointer;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:#fff;background:rgba(0,0,0,.12);transition:background .15s,border-color .15s;}
   .mode:hover{border-color:#fff;}
   .mode.on{border-color:transparent;}
   .mode.on[data-m="win"]{background:var(--tinta);}
-  .mode.on[data-m="delta"]{background:#a83d2b;}   .mode.on[data-m="abs"]{background:#b8860b;}   .mode.on[data-m="strat"]{background:#3f2378;}
+  .mode.on[data-m="delta"]{background:#a83d2b;}   .mode.on[data-m="abs"]{background:#b8860b;}   .mode.on[data-m="strat"]{background:#7453ca;}
   .mapbox{position:relative;border-radius:10px;margin-top:0;overflow:hidden;}
   #map{width:100%;height:640px;border-radius:8px;}
   .barrio{stroke:#fff;stroke-width:.18;cursor:pointer;}
@@ -229,7 +229,7 @@
     header.top .wrap{display:block;}
     .top-foto{position:absolute;left:-10%;bottom:-26px;height:120%;max-width:none;margin-right:0;opacity:.45;}
     .head-txt{padding-bottom:0;}
-    .lockups{gap:22px;}header .lockups,header .hashtag{display:none;}.foot-brand{display:flex;flex-direction:column;align-items:flex-start;gap:14px;margin-bottom:24px;}
+    .lockups{gap:22px;}header .lockups,header .hashtag{display:none;}.foot-brand{display:flex;flex-direction:column;align-items:flex-start;gap:14px;margin-bottom:24px;}.modes{width:100%;}.maptitle{font-size:19px;}
     .lockup{font-size:17px;}
     #map{height:62vh;}
     .legrow{flex-direction:column-reverse;align-items:flex-start;gap:8px;}
@@ -388,7 +388,7 @@
     <div class="maptitle">CÓMO VAMOS, BARRIO POR BARRIO</div>
     <div class="modes">
       <span class="mode on" data-m="strat">A movilizar</span>
-      <span class="mode" data-m="abs">Abstencionistas</span>
+      <span class="mode" data-m="abs">Abstención</span>
       <span class="mode" data-m="win">1ª vuelta</span>
       <span class="mode" data-m="delta">vs 2022</span>
     </div>
@@ -477,7 +477,7 @@ let MAPGL=null;
 function drawMap(){
  BGEO.features.forEach(f=>{const p=f.properties;p.colD=cDelta(p.d);p.colW=cMargin(p.c-p.a);p.colAbs=cAbs(p.abs);p.colStrat=p.w==='C'?cStrat(p.abs+0.8*p.d):'#1b1f29';});
  mapboxgl.accessToken='pk.eyJ1IjoiZ3J1bmR1bSIsImEiOiJjbXB6cWo1M2Uwa2l2MnFvamxxcXh5bDgxIn0.gGUXET8aMYfadSR8oVFDWg';
- MAPGL=new mapboxgl.Map({container:'map',style:'mapbox://styles/mapbox/dark-v11',center:[-74.1117,4.552],zoom:10.6,bearing:90,minZoom:9.2,maxZoom:16,maxBounds:[[-74.7,3.55],[-73.55,5.1]]});
+ var _bearing=window.matchMedia('(max-width:768px)').matches?0:90;MAPGL=new mapboxgl.Map({container:'map',style:'mapbox://styles/mapbox/dark-v11',center:[-74.1117,4.552],zoom:10.6,bearing:_bearing,minZoom:9.2,maxZoom:16,maxBounds:[[-74.7,3.55],[-73.55,5.1]]});
  MAPGL.addControl(new mapboxgl.NavigationControl({showCompass:false}),'top-right');
  let MAP_OK=false;
  MAPGL.on('error',e=>{const el=document.getElementById('map');if(!MAP_OK&&el&&!el.dataset.err){el.dataset.err=1;el.innerHTML='<div style="padding:40px;text-align:center;color:#4a2b03;font-size:14px;">No se pudo cargar el mapa (revisa conexión o token). El buscador de barrios sigue funcionando.</div>';}});
@@ -486,7 +486,7 @@ function drawMap(){
   // etiquetas sin halo blanco: solo el color del texto
   MAPGL.getStyle().layers.forEach(l=>{if(l.type==='symbol'){try{MAPGL.setPaintProperty(l.id,'text-halo-width',0);}catch(e){}}});
   MAPGL.resize();
-  MAPGL.fitBounds([[-74.2240,4.2690],[-73.9994,4.8350]],{bearing:90,padding:{top:24,bottom:24,left:34,right:34},duration:0});
+  MAPGL.fitBounds([[-74.2240,4.2690],[-73.9994,4.8350]],{bearing:_bearing,padding:{top:24,bottom:24,left:34,right:34},duration:0});
   MAPGL.addSource('barrios',{type:'geojson',data:BGEO});
   MAPGL.addSource('locs',{type:'geojson',data:LGEO});
   const firstSym=(MAPGL.getStyle().layers.find(l=>l.type==='symbol')||{}).id;
