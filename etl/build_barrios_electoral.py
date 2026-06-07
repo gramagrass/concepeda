@@ -41,6 +41,13 @@ DEP_BOGOTA = "16"
 CEPEDA_BOG_2026 = 41.67   # % sobre votos válidos
 ADLE_BOG_2026   = 37.69
 
+# --- Abstención (Ruta B): potencial reconstruido = nº de mesas × tope por mesa ---
+# El potencial por puesto no es dato abierto (Resol. 4601/4602, solo a partidos),
+# pero el tope por mesa es ~constante. Calibramos mesas×CAP al censo oficial de
+# Bogotá presidencial 2026 (Registraduría: 6.076.599; 1.083 puestos, 17.162 mesas).
+CENSO_BOG_2026 = 6076599  # potencial de votantes Bogotá, presidencial 2026
+CAP_MESA = 360            # tope de ciudadanos por mesa en capitales
+
 # --- Anclajes por localidad: % Cepeda 2026 (escrutinio ~98%, La Silla Vacía 2026-06-02) ---
 ANCHORS_2026 = {
     "KENNEDY": 44.0,
@@ -163,6 +170,37 @@ def load_escrutinio(path):
             elif cand == ADLE:
                 adle[key] += v
     return cep, adle, valid
+
+
+def load_turnout(path):
+    """Sufragantes (votación total = todos los votos, incl. nulos y no marcados)
+    y nº de mesas por puesto en Bogotá. Soporta los tres formatos 2026.
+    Devuelve (suf, mesas) indexados por (zona, puesto)."""
+    suf, mesas = defaultdict(int), defaultdict(set)
+    if is_escrutinio(path):
+        with open(path, encoding="latin-1") as f:
+            for ln in f:
+                p = ln.rstrip("\r\n;").split(";")
+                if len(p) < 12 or p[1] != DEP_BOGOTA:
+                    continue
+                key = (p[3][-2:], p[4])
+                suf[key] += int(p[11]); mesas[key].add(p[5])
+    elif is_divulgacion(path):
+        with open(path) as f:
+            for ln in f:
+                ln = ln.rstrip("\r\n")
+                if len(ln) < 38 or ln[:2] != DEP_BOGOTA:
+                    continue
+                key = (ln[5:7], ln[7:9])
+                suf[key] += int(ln[30:38]); mesas[key].add(ln[9:15])
+    else:
+        with open(path, encoding="latin-1") as f:
+            for row in csv.DictReader(f, delimiter=";"):
+                if row["DEP"] != DEP_BOGOTA:
+                    continue
+                key = (row["ZONA"], row["PUESTO"])
+                suf[key] += int(row["VOTOS"]); mesas[key].add(row["MESA"])
+    return suf, {k: len(v) for k, v in mesas.items()}
 
 
 def load_puestos(path):
@@ -292,6 +330,19 @@ def main():
                     "c26": 100 * cep26[k] / valid26[k],
                     "a26": 100 * adle26[k] / valid26[k], "d": None,
                 })
+        # --- abstención (Ruta B): sufragantes / (mesas × CAP calibrado al censo) ---
+        suf_p, mesas_p = load_turnout(args.mmv2026)
+        tot_mesas = sum(mesas_p.values())
+        scale = CENSO_BOG_2026 / (tot_mesas * CAP_MESA) if tot_mesas else 1.0
+        for d in located:
+            k = d["key"]
+            if k in mesas_p:
+                d["suf"] = suf_p.get(k, 0)
+                d["pot"] = mesas_p[k] * CAP_MESA * scale
+        tot_suf = sum(suf_p.values())
+        print(f"abstención: sufragantes={tot_suf:,} | censo={CENSO_BOG_2026:,} | "
+              f"mesas={tot_mesas} | cap efectivo/mesa={CENSO_BOG_2026/tot_mesas:.1f} | "
+              f"abstención ciudad={100*(1-tot_suf/CENSO_BOG_2026):.1f}%")
         assign_and_write(located, args, real=True)
         return
 
@@ -399,6 +450,12 @@ def assign_and_write(located, args, real):
             p["d"] = round(sum(s["d"] * (s.get(wkey) or s["w"]) for s in seld) / Wd, 1)
         p["w"] = "C" if c26 >= a26 else "A"
         p["np"] = len(sel)              # nº de puestos que sustentan el dato
+        # abstención del barrio = 1 − sufragantes / potencial (suma de sus puestos)
+        if any("suf" in s for s in sel):
+            sp = sum(s.get("pot", 0) for s in sel)
+            ss = sum(s.get("suf", 0) for s in sel)
+            if sp > 0:
+                p["abs"] = round(max(0.0, min(80.0, 100 * (1 - ss / sp))), 1)
         if real:
             p["src"] = "2026"           # conteo real 2026 por puesto
         sel2 = [s for s in sel if s.get("p2v") is not None]
